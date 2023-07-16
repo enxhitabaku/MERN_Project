@@ -1,3 +1,5 @@
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 import UserItem from './UserItem'
 
 /**
@@ -7,6 +9,17 @@ import UserItem from './UserItem'
  * @returns {JSX.Element}
  */
 export default function UsersList({ users }) {
+    if (users?.length === 0) {
+        return (
+            <section id="users-list-section">
+                <Alert severity="info">
+                    <AlertTitle>No Records Found</AlertTitle>
+                    No user records have been entered at this time.
+                </Alert>
+            </section>
+        )
+    }
+
     return (
         <section id="users-list-section">
             <ul>

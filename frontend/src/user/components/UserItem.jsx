@@ -10,7 +10,7 @@ import '../styles/user-style.css'
  * */
 export default function UserItem({ user }) {
     function generatePlaceCountLabel() {
-        return user.placeCount <= 1 ? 'Place' : 'Places'
+        return user.placeCount === 1 ? 'Place' : 'Places'
     }
 
     return (
