@@ -1,0 +1,21 @@
+.navigation-bar.MuiAppBar-root {
+    padding: 5px 0;
+    background-color: #f72626 !important;
+}
+
+.navigation-bar .MuiButtonBase-root {
+    color: black !important;
+    font-weight: 700 !important;
+}
+
+.navigation-bar .MuiButtonBase-root:hover {
+    background-color: rgb(255 255 255 / 30%) !important;
+}
+
+.navigation-bar .MuiAvatar-root {
+    background-color: #fcfbfb96;
+}
+
+.MuiTypography-root:hover {
+    font-weight: 700 !important;
+}
