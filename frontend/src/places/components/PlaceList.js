@@ -5,10 +5,10 @@ import PlaceItem from './PlaceItem'
 /**
  * React functional component to render a list of places.
  * @component
- * @param {{places: Place[], {string} creatorId, {Location}coordinates}}
+ * @param {{places: Place[]}}
  * @returns {JSX.Element}
  */
-export default function PlaceList({ places, creatorId, coordinates }) {
+export default function PlaceList({ places }) {
     if (places?.length === 0) {
         return (
             <section id="place-list-section">
