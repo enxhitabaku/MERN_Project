@@ -16,6 +16,6 @@
     background-color: #fcfbfb96;
 }
 
-.MuiTypography-root:hover {
+#menu-appbar .MuiTypography-root:hover {
     font-weight: 700 !important;
 }
