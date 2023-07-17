@@ -3,6 +3,7 @@ import NavigationBar from './shared/components/NavigationBar'
 import Users from './user/pages/Users'
 import AvatarOne from './static/images/avatar/avatar-boy-1.png'
 import AvatarTwo from './static/images/avatar/avatar-boy-2.png'
+import UserPlaces from './places/pages/UserPlaces'
 
 import {
     BrowserRouter as Router,
@@ -37,6 +38,9 @@ function App() {
                     </Route>
                     <Route path="/my-places" exact>
                         <h1>My Places</h1>
+                    </Route>
+                    <Route path="/:userId/places" exact>
+                        <UserPlaces />
                     </Route>
                     <Redirect to="/" />
                 </Switch>
