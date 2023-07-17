@@ -1,4 +1,5 @@
 import { Avatar, CardContent } from '@mui/material'
+import { Link } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import '../styles/user-style.css'
 
@@ -16,17 +17,25 @@ export default function UserItem({ user }) {
     return (
         <li className="user-list-item">
             <Card>
-                <CardContent className="card-content">
-                    <Avatar alt={user.fullName} src={user.imageSrc} size="lg" />
-                    <div>
-                        <h1 className="full-name-container">{user.fullName}</h1>
-                        <h2 className="place-count-container">
-                            <strong>{user.placeCount}</strong>
-                            &nbsp;
-                            {generatePlaceCountLabel()}
-                        </h2>
-                    </div>
-                </CardContent>
+                <Link to={`/${user.id}/places`}>
+                    <CardContent className="card-content">
+                        <Avatar
+                            alt={user.fullName}
+                            src={user.imageSrc}
+                            size="lg"
+                        />
+                        <div>
+                            <h1 className="full-name-container">
+                                {user.fullName}
+                            </h1>
+                            <h2 className="place-count-container">
+                                <strong>{user.placeCount}</strong>
+                                &nbsp;
+                                {generatePlaceCountLabel()}
+                            </h2>
+                        </div>
+                    </CardContent>
+                </Link>
             </Card>
         </li>
     )
