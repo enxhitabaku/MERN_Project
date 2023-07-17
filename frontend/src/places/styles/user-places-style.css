@@ -1,0 +1,28 @@
+/* Place Item Style */
+li.place-list-item {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
+
+.place-list-item-content,
+.place-list-item-image,
+.place-card-action-buttons-container {
+    cursor: default;
+}
+
+/* Place List Style */
+#place-list-section {
+    display: flex;
+    justify-content: center;
+    margin: 25px 15px;
+}
+
+.place-card-action-buttons-container.MuiCardActions-root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.important-action-buttons-container {
+    display: flex;
+    gap: 10px;
+}
