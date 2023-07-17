@@ -13,7 +13,12 @@ import '../styles/user-places-style.css'
  * @returns {JSX.Element}
  * */
 export default function PlaceItem({ place }) {
-    function handleOnOpenGoogleMapClick() {}
+    function handleOnOpenGoogleMapClick() {
+        window.open(
+            `http://maps.google.com/?q=${place.location.latitude},${place.location.longtitude}`,
+            '_blank'
+        )
+    }
 
     function handleOnEditClick() {}
 

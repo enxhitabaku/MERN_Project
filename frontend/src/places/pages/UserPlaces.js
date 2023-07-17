@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom'
 import PlaceList from '../components/PlaceList'
 import Berat from '../../static/images/places/berat.jpg'
 
@@ -13,14 +14,22 @@ const DummyPlaceList = [
             latitude: 41,
             longtitude: 20,
         },
-        creatorId: 'anonymous123',
+        creatorId: '1',
     },
 ]
 
 export default function UserPlaces() {
+    const userId = useParams().userId
+
+    function loadedPlaces() {
+        return DummyPlaceList.filter((place) => {
+            return place.creatorId === userId
+        })
+    }
+
     return (
         <>
-            <PlaceList places={DummyPlaceList} />
+            <PlaceList places={loadedPlaces()} />
         </>
     )
 }
