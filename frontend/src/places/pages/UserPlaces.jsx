@@ -12,7 +12,7 @@ const DummyPlaceList = [
         adddress: 'Berat',
         location: {
             latitude: 41,
-            longtitude: 20,
+            longitude: 20,
         },
         creatorId: '1',
     },

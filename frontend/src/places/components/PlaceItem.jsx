@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
@@ -15,14 +16,10 @@ import '../styles/user-places-style.css'
 export default function PlaceItem({ place }) {
     function handleOnOpenGoogleMapClick() {
         window.open(
-            `http://maps.google.com/?q=${place.location.latitude},${place.location.longtitude}`,
+            `http://maps.google.com/?q=${place.location.latitude},${place.location.longitude}`,
             '_blank'
         )
     }
-
-    function handleOnEditClick() {}
-
-    function handleOnDeleteClick() {}
 
     return (
         <li className="place-list-item">
@@ -50,20 +47,16 @@ export default function PlaceItem({ place }) {
                         Open on Google Map
                     </Button>
                     <div className="important-action-buttons-container">
-                        <Button
-                            size="small"
-                            variant="contained"
-                            color="warning"
-                            onClick={handleOnEditClick}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            size="small"
-                            variant="contained"
-                            color="error"
-                            onClick={handleOnDeleteClick}
-                        >
+                        <Link to={`/place/${place.id}`} exact={'true'}>
+                            <Button
+                                size="small"
+                                variant="contained"
+                                color="warning"
+                            >
+                                Edit
+                            </Button>
+                        </Link>
+                        <Button size="small" variant="contained" color="error">
                             Delete
                         </Button>
                     </div>

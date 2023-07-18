@@ -1,11 +1,11 @@
-import { TextField } from '@mui/material'
+import {TextField} from '@mui/material'
 
-import { useEffect, useReducer } from 'react'
-import { validate } from '../../utils/validators'
+import {useEffect, useReducer} from 'react'
+import {validate} from '../../utils/validators'
 import {
     SIMPLE_INPUT_TYPE,
     LATITUDE_INPUT_TYPE,
-    LONGTITUDE_INPUT_TYPE,
+    LONGITUDE_INPUT_TYPE,
     TEXT_AREA_INPUT_TYPE,
     FILE_INPUT_TYPE,
 } from '../../../places/constants/places-constants'
@@ -25,20 +25,21 @@ const inputReducer = (state, action) => {
                 isTouched: true,
             }
         }
-        default:
+        default: {
             return state
+        }
     }
 }
 
 export default function FormInput({
-    id,
-    inputElementType,
-    defaultValue,
-    isValid,
-    errorText,
-    validators,
-    onInput,
-}) {
+                                      id,
+                                      inputElementType,
+                                      defaultValue,
+                                      errorText,
+                                      validators,
+                                      onInput,
+                                      isValid = false
+                                  }) {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: defaultValue || '',
         isTouched: false,
@@ -126,21 +127,23 @@ function getInputElement(
             )
         }
         case LATITUDE_INPUT_TYPE: {
-            ;<TextField
-                id={id}
-                label="Latitude"
-                defaultValue={defaultValue}
-                error={hasError}
-                helperText={hasError ? errorText : ''}
-                onChange={changeHandler}
-                onBlur={touchHandler}
-            ></TextField>
-        }
-        case LONGTITUDE_INPUT_TYPE: {
             return (
                 <TextField
                     id={id}
-                    label="Longtitude"
+                    label="Latitude"
+                    defaultValue={defaultValue}
+                    error={hasError}
+                    helperText={hasError ? errorText : ''}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                ></TextField>
+            )
+        }
+        case LONGITUDE_INPUT_TYPE: {
+            return (
+                <TextField
+                    id={id}
+                    label="Longitude"
                     defaultValue={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}

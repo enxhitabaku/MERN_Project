@@ -1,9 +1,10 @@
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
-import { Button, CardActions } from '@mui/material'
+import {Button, CardActions} from '@mui/material'
 
 import FormInput from '../../shared/components/FormElements/FormInput'
+import useForm from '../../shared/hooks/place-form-hook'
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_COORDINATE,
@@ -12,80 +13,49 @@ import {
 import {
     SIMPLE_INPUT_TYPE,
     LATITUDE_INPUT_TYPE,
-    LONGTITUDE_INPUT_TYPE,
+    LONGITUDE_INPUT_TYPE,
     TEXT_AREA_INPUT_TYPE,
     FILE_INPUT_TYPE,
 } from '../constants/places-constants'
-import { useCallback, useReducer } from 'react'
+import {
+    FILE_UPLOAD_FIELD_ID,
+    DESCRIPTION_FIELD_ID,
+    LATITUDE_FIELD_ID,
+    LONGITUDE_FIELD_ID,
+    TITLE_FIELD_ID,
+} from '../../shared/constants/form-fields-constants'
 
-const formReducer = (state, action) => {
-    switch (action.type) {
-        case 'INPUT_CHANGE':
-            let formIsValid = true
-            for (const inputId in state.inputs) {
-                if (inputId === action.inputId) {
-                    formIsValid = formIsValid && action.isValid
-                } else {
-                    formIsValid = formIsValid && state.inputs[inputId].isValid
-                }
-            }
-            return {
-                ...state,
-                inputs: {
-                    ...state.inputs,
-                    [action.inputId]: {
-                        value: action.value,
-                        isValid: action.isValid,
-                    },
-                },
-                isValid: formIsValid,
-            }
-        default:
-            return state
-    }
-}
-
-export default function AddPlace() {
-    const [formState, dispatch] = useReducer(formReducer, {
-        inputs: {
-            'file-upload-field': {
-                value: '',
-                isValid: false,
-            },
-            'title-field': {
-                value: '',
-                isValid: false,
-            },
-            'description-field': {
-                value: '',
-                isValid: false,
-            },
-            'latitude-field': {
-                value: '',
-                isValid: false,
-            },
-            'longtitude-field': {
-                value: '',
-                isValid: false,
-            },
-        },
+const initialFormSetUp = {
+    FILE_UPLOAD_FIELD_ID: {
+        value: '',
         isValid: false,
-    })
-
-    const inputHandler = useCallback((id, value, isValid) => {
-        dispatch({
-            type: 'INPUT_CHANGE',
-            value: value,
-            isValid: isValid,
-            inputId: id,
-        })
-    }, [])
+    },
+    TITLE_FIELD_ID: {
+        value: '',
+        isValid: false,
+    },
+    DESCRIPTION_FIELD_ID: {
+        value: '',
+        isValid: false,
+    },
+    LATITUDE_FIELD_ID: {
+        value: '',
+        isValid: false,
+    },
+    LONGITUDE_FIELD_ID: {
+        value: '',
+        isValid: false,
+    },
+}
+export default function AddPlace() {
+    const [formState, inputHandler] = useForm(initialFormSetUp, false)
 
     function placeSubmitHandler(event) {
         event.preventDefault()
         //TODO: Send data to backend
         console.log(formState.inputs)
     }
+
     return (
         <section id="new-place-section">
             <form id="new-place-form">
@@ -93,7 +63,7 @@ export default function AddPlace() {
                     <CardContent>
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
-                                id="file-upload-field"
+                                id={FILE_UPLOAD_FIELD_ID}
                                 inputElementType={FILE_INPUT_TYPE}
                                 defaultValue=""
                                 errorText=""
@@ -101,7 +71,7 @@ export default function AddPlace() {
                                 onInput={inputHandler}
                             />
                             <FormInput
-                                id="title-field"
+                                id={TITLE_FIELD_ID}
                                 inputElementType={SIMPLE_INPUT_TYPE}
                                 defaultValue=""
                                 errorText="Please enter a valid title."
@@ -109,7 +79,7 @@ export default function AddPlace() {
                                 onInput={inputHandler}
                             />
                             <FormInput
-                                id="description-field"
+                                id={DESCRIPTION_FIELD_ID}
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
                                 defaultValue=""
                                 errorText="Please enter a description."
@@ -118,7 +88,7 @@ export default function AddPlace() {
                             />
                             <div id="coordinates-fields-container">
                                 <FormInput
-                                    id="latitude-field"
+                                    id={LATITUDE_FIELD_ID}
                                     inputElementType={LATITUDE_INPUT_TYPE}
                                     defaultValue=""
                                     errorText="Please enter a valid latitude."
@@ -126,10 +96,10 @@ export default function AddPlace() {
                                     onInput={inputHandler}
                                 />
                                 <FormInput
-                                    id="longtitude-field"
-                                    inputElementType={LONGTITUDE_INPUT_TYPE}
+                                    id={LONGITUDE_FIELD_ID}
+                                    inputElementType={LONGITUDE_INPUT_TYPE}
                                     defaultValue=""
-                                    errorText="Please enter a valid longtitude."
+                                    errorText="Please enter a valid longitude."
                                     validators={[VALIDATOR_COORDINATE()]}
                                     onInput={inputHandler}
                                 />
