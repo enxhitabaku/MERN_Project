@@ -11,7 +11,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 const fileWhiteList = ['image/jpg', 'image/jpeg', 'image/png']
 const fileMaxSize = 256000 //256KB
 
-export default function ImageUploader() {
+export default function ImageUploader({ id, onChange, error }) {
     const [fileList, setFileList] = useState([])
 
     function shouldAllowFile(file) {
@@ -21,21 +21,26 @@ export default function ImageUploader() {
         )
     }
 
+    function onUpdateFiles(files) {
+        onChange(files[0]?.file)
+        setFileList(files)
+    }
+
     return (
         <div className="App">
             <FilePond
-                required={true}
+                id={id}
                 storeAsFile={true}
                 files={fileList}
                 allowMultiple={false}
                 maxFiles={1}
                 beforeDropFile={shouldAllowFile}
                 beforeAddFile={shouldAllowFile}
-                onupdatefiles={setFileList}
+                onupdatefiles={onUpdateFiles}
                 name="image-uploader"
                 labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
             />
-            <FormHelperText>
+            <FormHelperText style={{ color: `${error ? 'red' : 'gray'}` }}>
                 Allowed image format: {fileWhiteList.join('; ')} <br />
                 Max. image size: {fileMaxSize}KB
             </FormHelperText>
