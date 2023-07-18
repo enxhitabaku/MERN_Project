@@ -27,14 +27,16 @@ li.place-list-item {
     gap: 10px;
 }
 
-/* New Place Style */
-#new-place-section {
+/* New Place Style and Edit Place Style */
+#new-place-section,
+#edit-place-section {
     display: flex;
     justify-content: center;
     margin: 25px 15px;
 }
 
-#new-place-section .MuiPaper-root {
+#new-place-section .MuiPaper-root,
+#edit-place-section .MuiPaper-root {
     padding: 15px 10px;
 }
 
@@ -53,4 +55,8 @@ li.place-list-item {
 #form-action-buttons-container {
     width: 100%;
     justify-content: flex-end;
+}
+
+#edit-place-form {
+    width: 65%;
 }

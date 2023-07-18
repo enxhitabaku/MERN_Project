@@ -12,7 +12,7 @@
 /**
  * @typedef {object} Location
  * @property {number} latitude
- * @property {number} longtitude
+ * @property {number} longitude
  **/
 
 /**

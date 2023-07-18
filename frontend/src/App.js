@@ -14,6 +14,7 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom'
+import EditPlace from './places/pages/EditPlace'
 
 const DummyUsersList = [
     {
@@ -47,6 +48,9 @@ function App() {
                     </Route>
                     <Route path="/add-place">
                         <AddPlace />
+                    </Route>
+                    <Route path="/place/:placeId" exact>
+                        <EditPlace />
                     </Route>
                     <Redirect to="/" />
                 </Switch>
