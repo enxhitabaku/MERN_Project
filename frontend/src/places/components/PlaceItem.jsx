@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
-import { Button, CardActions } from '@mui/material'
+import {Button, CardActions} from '@mui/material'
 import '../styles/user-places-style.css'
 
 /**
@@ -13,12 +13,19 @@ import '../styles/user-places-style.css'
  * @param {{place: Place}} place
  * @returns {JSX.Element}
  * */
-export default function PlaceItem({ place }) {
+export default function PlaceItem({place}) {
     function handleOnOpenGoogleMapClick() {
         window.open(
             `http://maps.google.com/?q=${place.location.latitude},${place.location.longitude}`,
             '_blank'
         )
+    }
+
+    function handleOnDelete() {
+        if (window.confirm("Are you sure to delete this place ?")) {
+            // DO Delete
+            console.log("DELETING..");
+        }
     }
 
     return (
@@ -56,7 +63,7 @@ export default function PlaceItem({ place }) {
                                 Edit
                             </Button>
                         </Link>
-                        <Button size="small" variant="contained" color="error">
+                        <Button size="small" variant="contained" color="error" onClick={handleOnDelete}>
                             Delete
                         </Button>
                     </div>

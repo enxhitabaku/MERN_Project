@@ -48,12 +48,19 @@ const initialFormSetUp = {
     },
 }
 export default function AddPlace() {
-    const [formState, inputHandler] = useForm(initialFormSetUp, false)
+    const [formState, inputHandler, setFormData] = useForm(initialFormSetUp, false)
 
     function placeSubmitHandler(event) {
         event.preventDefault()
         //TODO: Send data to backend
         console.log(formState.inputs)
+    }
+
+    function handleOnDiscard() {
+        if (window.confirm("Are you sure to discard your changes ?")) {
+            setFormData(initialFormSetUp, false);
+            console.log("Discarding..");
+        }
     }
 
     return (
@@ -65,7 +72,8 @@ export default function AddPlace() {
                             <FormInput
                                 id={FILE_UPLOAD_FIELD_ID}
                                 inputElementType={FILE_INPUT_TYPE}
-                                defaultValue=""
+                                defaultValue={""}
+                                isValid={formState.inputs.FILE_UPLOAD_FIELD_ID.isValid}
                                 errorText=""
                                 validators={[VALIDATOR_FILE()]}
                                 onInput={inputHandler}
@@ -73,7 +81,8 @@ export default function AddPlace() {
                             <FormInput
                                 id={TITLE_FIELD_ID}
                                 inputElementType={SIMPLE_INPUT_TYPE}
-                                defaultValue=""
+                                defaultValue={formState.inputs.TITLE_FIELD_ID.value}
+                                isValid={formState.inputs.TITLE_FIELD_ID.isValid}
                                 errorText="Please enter a valid title."
                                 validators={[VALIDATOR_REQUIRE()]}
                                 onInput={inputHandler}
@@ -81,7 +90,8 @@ export default function AddPlace() {
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
-                                defaultValue=""
+                                defaultValue={formState.inputs.DESCRIPTION_FIELD_ID.value}
+                                isValid={formState.inputs.DESCRIPTION_FIELD_ID.isValid}
                                 errorText="Please enter a description."
                                 validators={[VALIDATOR_REQUIRE()]}
                                 onInput={inputHandler}
@@ -90,7 +100,8 @@ export default function AddPlace() {
                                 <FormInput
                                     id={LATITUDE_FIELD_ID}
                                     inputElementType={LATITUDE_INPUT_TYPE}
-                                    defaultValue=""
+                                    defaultValue={formState.inputs.LATITUDE_FIELD_ID.value}
+                                    isValid={formState.inputs.LATITUDE_FIELD_ID.isValid}
                                     errorText="Please enter a valid latitude."
                                     validators={[VALIDATOR_COORDINATE()]}
                                     onInput={inputHandler}
@@ -98,7 +109,8 @@ export default function AddPlace() {
                                 <FormInput
                                     id={LONGITUDE_FIELD_ID}
                                     inputElementType={LONGITUDE_INPUT_TYPE}
-                                    defaultValue=""
+                                    defaultValue={formState.inputs.LONGITUDE_FIELD_ID.value}
+                                    isValid={formState.inputs.LONGITUDE_FIELD_ID.isValid}
                                     errorText="Please enter a valid longitude."
                                     validators={[VALIDATOR_COORDINATE()]}
                                     onInput={inputHandler}
@@ -124,6 +136,7 @@ export default function AddPlace() {
                                 size="small"
                                 variant="contained"
                                 color="error"
+                                onClick={handleOnDiscard}
                             >
                                 Discard
                             </Button>

@@ -44,11 +44,11 @@ export default function EditPlace() {
 
     const [formState, inputHandler, setFormData] = useForm(
         {
-            title: {
+            TITLE_FIELD_ID: {
                 value: '',
                 isValid: false
             },
-            description: {
+            DESCRIPTION_FIELD_ID: {
                 value: '',
                 isValid: false
             }
@@ -62,11 +62,11 @@ export default function EditPlace() {
         if (identifiedPlace) {
             setFormData(
                 {
-                    title: {
+                    TITLE_FIELD_ID: {
                         value: identifiedPlace.title,
                         isValid: true
                     },
-                    description: {
+                    DESCRIPTION_FIELD_ID: {
                         value: identifiedPlace.description,
                         isValid: true
                     }
@@ -113,8 +113,8 @@ export default function EditPlace() {
                                 errorText="Please enter a valid title."
                                 validators={[VALIDATOR_REQUIRE()]}
                                 onInput={inputHandler}
-                                defaultValue={formState.inputs.title.value}
-                                isValid={formState.inputs.title.isValid}
+                                defaultValue={formState.inputs.TITLE_FIELD_ID.value}
+                                isValid={formState.inputs.TITLE_FIELD_ID.isValid}
                             />
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
@@ -122,8 +122,8 @@ export default function EditPlace() {
                                 errorText="Please enter a description."
                                 validators={[VALIDATOR_REQUIRE()]}
                                 onInput={inputHandler}
-                                defaultValue={formState.inputs.title.value}
-                                isValid={formState.inputs.title.isValid}
+                                defaultValue={formState.inputs.DESCRIPTION_FIELD_ID.value}
+                                isValid={formState.inputs.DESCRIPTION_FIELD_ID.isValid}
                             />
                         </Box>
                     </CardContent>
