@@ -26,3 +26,31 @@ li.place-list-item {
     display: flex;
     gap: 10px;
 }
+
+/* New Place Style */
+#new-place-section {
+    display: flex;
+    justify-content: center;
+    margin: 25px 15px;
+}
+
+#new-place-section .MuiPaper-root {
+    padding: 15px 10px;
+}
+
+#coordinates-fields-container {
+    display: flex;
+    flex: row;
+    gap: 10px;
+}
+
+#form-container {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+}
+
+#form-action-buttons-container {
+    width: 100%;
+    justify-content: flex-end;
+}
