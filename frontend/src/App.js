@@ -1,9 +1,12 @@
 import './App.css'
-import NavigationBar from './shared/components/NavigationBar'
-import Users from './user/pages/Users'
+
 import AvatarOne from './static/images/avatar/avatar-boy-1.png'
 import AvatarTwo from './static/images/avatar/avatar-boy-2.png'
+
+import Users from './user/pages/Users'
+import NavigationBar from './shared/components/navigation/NavigationBar'
 import UserPlaces from './places/pages/UserPlaces'
+import AddPlace from './places/pages/NewPlace'
 
 import {
     BrowserRouter as Router,
@@ -41,6 +44,9 @@ function App() {
                     </Route>
                     <Route path="/:userId/places" exact>
                         <UserPlaces />
+                    </Route>
+                    <Route path="/add-place">
+                        <AddPlace />
                     </Route>
                     <Redirect to="/" />
                 </Switch>

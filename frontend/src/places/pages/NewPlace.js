@@ -4,6 +4,8 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Button, CardActions } from '@mui/material'
 
+import ImageUploader from '../../shared/components/image-uploader/ImageUploader'
+
 export default function AddPlace() {
     return (
         <section id="new-place-section">
@@ -15,6 +17,7 @@ export default function AddPlace() {
                         autoComplete="off"
                         id="form-container"
                     >
+                        <ImageUploader />
                         <TextField
                             required
                             id="title-field"
