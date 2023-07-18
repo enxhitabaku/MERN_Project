@@ -10,12 +10,13 @@ import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 
 import AppLogo from './AppLogo'
-import '../styles/navigation-bar.css'
 import {
     NavigationLinks,
     SettingsLinks,
     ResponsiveNavigationLinks,
 } from './AppLinks'
+
+import '../../styles/navigation-bar.css'
 
 /**
  * Functional Component to render the Navigation Bar

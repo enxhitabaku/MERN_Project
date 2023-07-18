@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem'
 import {
     navLinksList,
     settingsList,
-} from '../constants/navigation-bar-constants'
+} from '../../constants/navigation-bar-constants'
 
 export function NavigationLinks({ onClick }) {
     return (
