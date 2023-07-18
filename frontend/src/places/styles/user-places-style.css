@@ -56,3 +56,7 @@ li.place-list-item {
     width: 100%;
     justify-content: flex-end;
 }
+
+#edit-place-form {
+    width: 65%;
+}
