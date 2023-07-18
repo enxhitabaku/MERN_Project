@@ -15,7 +15,7 @@ import {
     LONGTITUDE_INPUT_TYPE,
     TEXT_AREA_INPUT_TYPE,
     FILE_INPUT_TYPE,
-} from '../../places/constants/places-constants'
+} from '../constants/places-constants'
 import { useCallback, useReducer } from 'react'
 
 const formReducer = (state, action) => {
