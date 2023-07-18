@@ -101,7 +101,7 @@ function getInputElement(
                     required
                     id={id}
                     label="Title"
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
@@ -118,7 +118,7 @@ function getInputElement(
                     variant="filled"
                     multiline
                     rows={8}
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
@@ -131,7 +131,7 @@ function getInputElement(
                 <TextField
                     id={id}
                     label="Latitude"
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
@@ -144,7 +144,7 @@ function getInputElement(
                 <TextField
                     id={id}
                     label="Longitude"
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
