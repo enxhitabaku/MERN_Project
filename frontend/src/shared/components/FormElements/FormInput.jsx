@@ -1,15 +1,15 @@
 import {TextField} from '@mui/material'
 
 import {useEffect, useReducer} from 'react'
+
 import {validate} from '../../utils/validators'
+import ImageUploader from './ImageUploader'
 import {
-    SIMPLE_INPUT_TYPE,
-    LATITUDE_INPUT_TYPE,
-    LONGITUDE_INPUT_TYPE,
-    TEXT_AREA_INPUT_TYPE,
     FILE_INPUT_TYPE,
-} from '../../../places/constants/places-constants'
-import ImageUploader from '../image-uploader/ImageUploader'
+    PASSWORD_INPUT_TYPE,
+    SIMPLE_INPUT_TYPE,
+    TEXT_AREA_INPUT_TYPE
+} from "../../constants/form-fields-constants";
 
 const inputReducer = (state, action) => {
     switch (action.type) {
@@ -36,6 +36,7 @@ export default function FormInput({
                                       inputElementType,
                                       label,
                                       defaultValue,
+                                      isRequired,
                                       errorText,
                                       validators,
                                       onInput,
@@ -73,94 +74,58 @@ export default function FormInput({
         })
     }
 
-    return getInputElement(
-        id,
-        label,
-        inputElementType,
-        defaultValue,
-        !inputState.isValid && inputState.isTouched,
-        errorText,
-        changeHandler,
-        changeFileHandler,
-        touchHandler
-    )
-}
-
-function getInputElement(
-    id,
-    label,
-    inputElementType,
-    defaultValue,
-    hasError,
-    errorText,
-    changeHandler,
-    changeFileHandler,
-    touchHandler
-) {
+    const hasError = (!inputState.isValid && inputState.isTouched);
     switch (inputElementType) {
         case SIMPLE_INPUT_TYPE: {
             return (
                 <TextField
-                    required
+                    required={isRequired ?? false}
                     id={id}
-                    label={label}
-                    value={defaultValue}
+                    label={label ?? ""}
+                    defaultValue={defaultValue ?? ""}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
                     onBlur={touchHandler}
                 />
-            )
+            );
+        }
+        case PASSWORD_INPUT_TYPE: {
+            return (
+                <TextField
+                    required={isRequired ?? false}
+                    id={id}
+                    label={label ?? ""}
+                    defaultValue={defaultValue ?? ""}
+                    error={hasError}
+                    helperText={hasError ? errorText : ''}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
+                />
+            );
         }
         case TEXT_AREA_INPUT_TYPE: {
             return (
                 <TextField
-                    required
+                    required={isRequired ?? false}
                     id={id}
-                    label={label}
-                    variant="filled"
+                    label={label ?? ""}
+                    defaultValue={defaultValue ?? ""}
+                    error={hasError}
+                    helperText={hasError ? errorText : ''}
+                    onChange={changeHandler}
+                    onBlur={touchHandler}
                     multiline
                     rows={8}
-                    value={defaultValue}
-                    error={hasError}
-                    helperText={hasError ? errorText : ''}
-                    onChange={changeHandler}
-                    onBlur={touchHandler}
                 />
-            )
-        }
-        case LATITUDE_INPUT_TYPE: {
-            return (
-                <TextField
-                    id={id}
-                    label={label}
-                    value={defaultValue}
-                    error={hasError}
-                    helperText={hasError ? errorText : ''}
-                    onChange={changeHandler}
-                    onBlur={touchHandler}
-                ></TextField>
-            )
-        }
-        case LONGITUDE_INPUT_TYPE: {
-            return (
-                <TextField
-                    id={id}
-                    label={label}
-                    value={defaultValue}
-                    error={hasError}
-                    helperText={hasError ? errorText : ''}
-                    onChange={changeHandler}
-                    onBlur={touchHandler}
-                ></TextField>
-            )
+            );
         }
         case FILE_INPUT_TYPE: {
             return (
                 <ImageUploader
                     id={id}
-                    onChange={changeFileHandler}
                     error={hasError}
+                    onChange={changeFileHandler}
                 />
             )
         }

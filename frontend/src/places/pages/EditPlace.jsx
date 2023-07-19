@@ -10,16 +10,11 @@ import '../styles/user-places-style.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import useForm from '../../shared/hooks/place-form-hook'
 import {
-    DESCRIPTION_FIELD_ID,
+    DESCRIPTION_FIELD_ID, SIMPLE_INPUT_TYPE, TEXT_AREA_INPUT_TYPE,
     TITLE_FIELD_ID,
 } from '../../shared/constants/form-fields-constants'
 import FormInput from '../../shared/components/FormElements/FormInput'
-import {
-    TEXT_AREA_INPUT_TYPE,
-    SIMPLE_INPUT_TYPE,
-} from '../constants/places-constants'
 import {VALIDATOR_REQUIRE} from '../../shared/utils/validators'
-import * as React from "react";
 import {useEffect, useState} from "react";
 
 /**@type {Place[]}*/
@@ -109,6 +104,7 @@ export default function EditPlace() {
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
                                 id={TITLE_FIELD_ID}
+                                isRequired={true}
                                 label="Title"
                                 inputElementType={SIMPLE_INPUT_TYPE}
                                 errorText="Please enter a valid title."
@@ -119,6 +115,7 @@ export default function EditPlace() {
                             />
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
+                                isRequired={true}
                                 label="Description"
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
                                 errorText="Please enter a description."

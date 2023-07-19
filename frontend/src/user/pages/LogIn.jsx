@@ -4,10 +4,9 @@ import CardContent from "@mui/material/CardContent";
 import '../styles/user-style.css'
 
 import FormInput from "../../shared/components/FormElements/FormInput";
-import {EMAIL_FIELD_ID, PASSWORD_FIELD_ID} from "../constants/user-constants";
-import {SIMPLE_INPUT_TYPE} from "../../places/constants/places-constants";
 import {VALIDATOR_EMAIL} from "../../shared/utils/validators";
 import useForm from "../../shared/hooks/place-form-hook";
+import {EMAIL_FIELD_ID, SIMPLE_INPUT_TYPE} from "../../shared/constants/form-fields-constants";
 
 export default function LogIn() {
     const [formState, inputHandler] = useForm(

@@ -11,18 +11,11 @@ import {
     VALIDATOR_FILE,
 } from '../../shared/utils/validators'
 import {
-    SIMPLE_INPUT_TYPE,
-    LATITUDE_INPUT_TYPE,
-    LONGITUDE_INPUT_TYPE,
-    TEXT_AREA_INPUT_TYPE,
-    FILE_INPUT_TYPE,
-} from '../constants/places-constants'
-import {
     FILE_UPLOAD_FIELD_ID,
     DESCRIPTION_FIELD_ID,
     LATITUDE_FIELD_ID,
     LONGITUDE_FIELD_ID,
-    TITLE_FIELD_ID,
+    TITLE_FIELD_ID, FILE_INPUT_TYPE, TEXT_AREA_INPUT_TYPE, SIMPLE_INPUT_TYPE,
 } from '../../shared/constants/form-fields-constants'
 
 const initialFormSetUp = {
@@ -71,7 +64,6 @@ export default function AddPlace() {
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
                                 id={FILE_UPLOAD_FIELD_ID}
-                                label={""}
                                 inputElementType={FILE_INPUT_TYPE}
                                 defaultValue={""}
                                 isValid={formState.inputs.FILE_UPLOAD_FIELD_ID.isValid}
@@ -81,6 +73,7 @@ export default function AddPlace() {
                             />
                             <FormInput
                                 id={TITLE_FIELD_ID}
+                                isRequired={true}
                                 label={"Title"}
                                 inputElementType={SIMPLE_INPUT_TYPE}
                                 defaultValue={formState.inputs.TITLE_FIELD_ID.value}
@@ -91,6 +84,7 @@ export default function AddPlace() {
                             />
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
+                                isRequired={true}
                                 label={"Description"}
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
                                 defaultValue={formState.inputs.DESCRIPTION_FIELD_ID.value}
@@ -102,8 +96,9 @@ export default function AddPlace() {
                             <div id="coordinates-fields-container">
                                 <FormInput
                                     id={LATITUDE_FIELD_ID}
+                                    isRequired={true}
                                     label={"Latitude"}
-                                    inputElementType={LATITUDE_INPUT_TYPE}
+                                    inputElementType={SIMPLE_INPUT_TYPE}
                                     defaultValue={formState.inputs.LATITUDE_FIELD_ID.value}
                                     isValid={formState.inputs.LATITUDE_FIELD_ID.isValid}
                                     errorText="Please enter a valid latitude."
@@ -112,8 +107,9 @@ export default function AddPlace() {
                                 />
                                 <FormInput
                                     id={LONGITUDE_FIELD_ID}
+                                    isRequired={true}
                                     label={"Longitude"}
-                                    inputElementType={LONGITUDE_INPUT_TYPE}
+                                    inputElementType={SIMPLE_INPUT_TYPE}
                                     defaultValue={formState.inputs.LONGITUDE_FIELD_ID.value}
                                     isValid={formState.inputs.LONGITUDE_FIELD_ID.isValid}
                                     errorText="Please enter a valid longitude."
