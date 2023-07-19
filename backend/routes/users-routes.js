@@ -22,4 +22,12 @@ router.get('/:uid', (req, res, next) => {
     res.json({user})
 });
 
+router.post('/sign-up', (req, res, next) => {
+
+});
+
+router.post('/log-in', (req, res, next) => {
+
+});
+
 module.exports = router;

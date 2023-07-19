@@ -55,4 +55,16 @@ router.get('/user/:uid', (req, res, next) => {
     res.json({place});
 });
 
+router.post('/', (req, res, next) => {
+
+});
+
+router.patch('/:pid', (req, res, next) => {
+
+});
+
+router.delete('/', (req, res, next) => {
+
+});
+
 module.exports = router;
