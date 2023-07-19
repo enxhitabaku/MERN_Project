@@ -1,0 +1,2 @@
+export const EMAIL_FIELD_ID = "EMAIL_FIELD_ID"
+export const PASSWORD_FIELD_ID = "PASSWORD_FIELD_ID"

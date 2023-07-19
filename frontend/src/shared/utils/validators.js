@@ -1,8 +1,9 @@
 const VALIDATOR_TYPE_REQUIRE = 'REQUIRE'
 const VALIDATOR_TYPE_COORDINATE = 'COORDINATE'
 const VALIDATOR_TYPE_FILE = 'FILE'
+const VALIDATOR_TYPE_EMAIL = 'EMAIL';
 
-export const VALIDATOR_REQUIRE = () => ({ type: VALIDATOR_TYPE_REQUIRE })
+export const VALIDATOR_REQUIRE = () => ({type: VALIDATOR_TYPE_REQUIRE})
 export const VALIDATOR_COORDINATE = (val) => ({
     type: VALIDATOR_TYPE_COORDINATE,
     val: val,
@@ -11,6 +12,7 @@ export const VALIDATOR_FILE = (val) => ({
     type: VALIDATOR_TYPE_FILE,
     val: val,
 })
+export const VALIDATOR_EMAIL = () => ({type: VALIDATOR_TYPE_EMAIL});
 
 export function validate(value, validators) {
     let isValid = true
@@ -24,6 +26,9 @@ export function validate(value, validators) {
         }
         if (validator.type === VALIDATOR_TYPE_FILE) {
             isValid = value !== undefined
+        }
+        if (validator.type === VALIDATOR_TYPE_EMAIL) {
+            isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
         }
     }
     return isValid

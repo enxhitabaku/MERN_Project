@@ -109,6 +109,7 @@ export default function EditPlace() {
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
                                 id={TITLE_FIELD_ID}
+                                label="Title"
                                 inputElementType={SIMPLE_INPUT_TYPE}
                                 errorText="Please enter a valid title."
                                 validators={[VALIDATOR_REQUIRE()]}
@@ -118,6 +119,7 @@ export default function EditPlace() {
                             />
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
+                                label="Description"
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
                                 errorText="Please enter a description."
                                 validators={[VALIDATOR_REQUIRE()]}

@@ -34,6 +34,7 @@ const inputReducer = (state, action) => {
 export default function FormInput({
                                       id,
                                       inputElementType,
+                                      label,
                                       defaultValue,
                                       errorText,
                                       validators,
@@ -74,6 +75,7 @@ export default function FormInput({
 
     return getInputElement(
         id,
+        label,
         inputElementType,
         defaultValue,
         !inputState.isValid && inputState.isTouched,
@@ -86,6 +88,7 @@ export default function FormInput({
 
 function getInputElement(
     id,
+    label,
     inputElementType,
     defaultValue,
     hasError,
@@ -100,7 +103,7 @@ function getInputElement(
                 <TextField
                     required
                     id={id}
-                    label="Title"
+                    label={label}
                     value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
@@ -114,7 +117,7 @@ function getInputElement(
                 <TextField
                     required
                     id={id}
-                    label="Description"
+                    label={label}
                     variant="filled"
                     multiline
                     rows={8}
@@ -130,7 +133,7 @@ function getInputElement(
             return (
                 <TextField
                     id={id}
-                    label="Latitude"
+                    label={label}
                     value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
@@ -143,7 +146,7 @@ function getInputElement(
             return (
                 <TextField
                     id={id}
-                    label="Longitude"
+                    label={label}
                     value={defaultValue}
                     error={hasError}
                     helperText={hasError ? errorText : ''}
