@@ -1,4 +1,4 @@
-import React from 'react'
+import {useContext, useState} from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -12,11 +12,13 @@ import Tooltip from '@mui/material/Tooltip'
 import AppLogo from './AppLogo'
 import {
     NavigationLinks,
-    SettingsLinks,
     ResponsiveNavigationLinks, AuthorizationLinks,
 } from './AppLinks'
 
 import '../../styles/navigation-bar.css'
+import {AuthenticationContext} from "../../context/AuthenticationContext";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
 
 /**
  * Functional Component to render the Navigation Bar
@@ -24,9 +26,11 @@ import '../../styles/navigation-bar.css'
  * @param {{user: User}}
  * @returns {JSX.Element}
  **/
-export default function NavigationBar({user, isAuthenticated}) {
-    const [anchorElNav, setAnchorElNav] = React.useState(null)
-    const [anchorElUser, setAnchorElUser] = React.useState(null)
+export default function NavigationBar({user}) {
+    const {isAuthenticated, onLogOut} = useContext(AuthenticationContext);
+
+    const [anchorElNav, setAnchorElNav] = useState(null)
+    const [anchorElUser, setAnchorElUser] = useState(null)
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget)
@@ -43,58 +47,66 @@ export default function NavigationBar({user, isAuthenticated}) {
         setAnchorElUser(null)
     }
 
+    const handleLogOutClick = () => {
+        onLogOut()
+    }
+
     return (
         <AppBar position="static" className="navigation-bar">
             <Container maxWidth="xl">
-                <Toolbar disableGutters>
+                <Toolbar style={{display: "flex", justifyContent: "space-between"}} disableGutters>
                     <AppLogo/>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: {xs: 'flex', md: 'none'},
-                        }}
-                    >
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon/>
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: {xs: 'block', md: 'none'},
-                            }}
-                        >
-                            <NavigationLinks onClick={handleCloseNavMenu}/>
-                        </Menu>
-                    </Box>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: {xs: 'none', md: 'flex'},
-                        }}
-                    >
-                        <ResponsiveNavigationLinks
-                            onClick={handleCloseNavMenu}
-                        />
-                    </Box>
+                    {isAuthenticated &&
+                        <>
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                    display: {xs: 'flex', md: 'none'},
+                                }}
+                            >
+                                <IconButton
+                                    size="large"
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    onClick={handleOpenNavMenu}
+                                    color="inherit"
+                                >
+                                    <MenuIcon/>
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorElNav}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
+                                    open={Boolean(anchorElNav)}
+                                    onClose={handleCloseNavMenu}
+                                    sx={{
+                                        display: {xs: 'block', md: 'none'},
+                                    }}
+                                >
+                                    <NavigationLinks onClick={handleCloseNavMenu}/>
+                                </Menu>
+                            </Box>
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                    display: {xs: 'none', md: 'flex'},
+                                }}
+                            >
+                                <ResponsiveNavigationLinks
+                                    onClick={handleCloseNavMenu}
+                                />
+                            </Box>
+                        </>
+                    }
 
                     <Box sx={{flexGrow: 0}}>
                         {
@@ -127,7 +139,11 @@ export default function NavigationBar({user, isAuthenticated}) {
                                         open={Boolean(anchorElUser)}
                                         onClose={handleCloseUserMenu}
                                     >
-                                        <SettingsLinks onClick={handleCloseNavMenu}/>
+                                        <MenuItem onClick={handleLogOutClick}>
+                                            <Typography textAlign="center">
+                                                Log Out
+                                            </Typography>
+                                        </MenuItem>
                                     </Menu>
                                 </>
                         }

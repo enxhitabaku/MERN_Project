@@ -19,23 +19,7 @@ export const navLinksList = [
 /**
  * @type {NavigationLink[]}
  **/
-export const settingsList = [
-    {
-        urlPath: '/profile',
-        label: 'Profile',
-    },
-
-    {
-        urlPath: '/log-out',
-        label: 'Log Out',
-    },
-]
-
-//TODO: Create Component for those navigaion links that should be displayed when the user is not logged in.
-/**
- * @type {NavigationLink[]}
- **/
-export const authorizationList = [
+export const authorizationLinksList = [
     {
         urlPath: '/log-in',
         label: 'Log In',
