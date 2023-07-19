@@ -145,7 +145,7 @@ export default function EditPlace() {
                                 variant="contained"
                                 color="error"
                             >
-                                Discard
+                                Cancel
                             </Button>
                         </div>
                     </CardActions>
