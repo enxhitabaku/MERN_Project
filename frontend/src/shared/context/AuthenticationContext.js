@@ -9,7 +9,7 @@ export const AuthenticationContext = createContext({
 });
 
 export function AuthenticationContextProvider(props) {
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     function onLogIn() {
         setIsAuthenticated(true);
