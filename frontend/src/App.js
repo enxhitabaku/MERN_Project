@@ -36,7 +36,7 @@ function App() {
     return (
         <section id="trave-albania-main-container">
             <Router>
-                <NavigationBar user={DummyUsersList[0]}/>
+                <NavigationBar user={DummyUsersList[0]} isAuthenticated={false}/>
                 <Switch>
                     <Route path="/" exact>
                         <Users/>

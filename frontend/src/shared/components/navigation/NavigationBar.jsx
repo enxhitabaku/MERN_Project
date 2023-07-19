@@ -13,7 +13,7 @@ import AppLogo from './AppLogo'
 import {
     NavigationLinks,
     SettingsLinks,
-    ResponsiveNavigationLinks,
+    ResponsiveNavigationLinks, AuthorizationLinks,
 } from './AppLinks'
 
 import '../../styles/navigation-bar.css'
@@ -24,7 +24,7 @@ import '../../styles/navigation-bar.css'
  * @param {{user: User}}
  * @returns {JSX.Element}
  **/
-export default function NavigationBar({ user }) {
+export default function NavigationBar({user, isAuthenticated}) {
     const [anchorElNav, setAnchorElNav] = React.useState(null)
     const [anchorElUser, setAnchorElUser] = React.useState(null)
 
@@ -47,11 +47,11 @@ export default function NavigationBar({ user }) {
         <AppBar position="static" className="navigation-bar">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AppLogo />
+                    <AppLogo/>
                     <Box
                         sx={{
                             flexGrow: 1,
-                            display: { xs: 'flex', md: 'none' },
+                            display: {xs: 'flex', md: 'none'},
                         }}
                     >
                         <IconButton
@@ -62,7 +62,7 @@ export default function NavigationBar({ user }) {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -79,16 +79,16 @@ export default function NavigationBar({ user }) {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                display: {xs: 'block', md: 'none'},
                             }}
                         >
-                            <NavigationLinks onClick={handleCloseNavMenu} />
+                            <NavigationLinks onClick={handleCloseNavMenu}/>
                         </Menu>
                     </Box>
                     <Box
                         sx={{
                             flexGrow: 1,
-                            display: { xs: 'none', md: 'flex' },
+                            display: {xs: 'none', md: 'flex'},
                         }}
                     >
                         <ResponsiveNavigationLinks
@@ -96,36 +96,41 @@ export default function NavigationBar({ user }) {
                         />
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton
-                                onClick={handleOpenUserMenu}
-                                sx={{ p: 0 }}
-                            >
-                                <Avatar
-                                    alt={user.fullName}
-                                    src={user.imageSrc}
-                                />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            <SettingsLinks onClick={handleCloseNavMenu} />
-                        </Menu>
+                    <Box sx={{flexGrow: 0}}>
+                        {
+                            !isAuthenticated ? <AuthorizationLinks/> :
+                                <>
+                                    <Tooltip title="Open settings">
+                                        <IconButton
+                                            onClick={handleOpenUserMenu}
+                                            sx={{p: 0}}
+                                        >
+                                            <Avatar
+                                                alt={user.fullName}
+                                                src={user.imageSrc}
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        sx={{mt: '45px'}}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
+                                    >
+                                        <SettingsLinks onClick={handleCloseNavMenu}/>
+                                    </Menu>
+                                </>
+                        }
                     </Box>
                 </Toolbar>
             </Container>
