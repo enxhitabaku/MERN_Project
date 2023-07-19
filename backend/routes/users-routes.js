@@ -1,5 +1,7 @@
 const express = require('express');
+const {check} = require('express-validator');
 
+const usersController = require('../controllers/users-controller')
 const router = express.Router();
 
 const DummyUsersList = [
@@ -15,19 +17,26 @@ const DummyUsersList = [
     },
 ]
 
-router.get('/:uid', (req, res, next) => {
-    const userId = req.params.uid
-    const user = DummyUsersList.find((u) => u.id === userId);
+router.get('/', usersController.getUsers);
 
-    res.json({user})
-});
+router.post('/sign-up',
+    [
+        check('gender')
+            .isString()
+            .isIn(["male", "female"]),
+        check('email')
+            .normalizeEmail()
+            .isEmail(),
+        check('password').isLength({min: 9})
+    ],
+    usersController.signup);
 
-router.post('/sign-up', (req, res, next) => {
-
-});
-
-router.post('/log-in', (req, res, next) => {
-
-});
+router.post('/log-in', [
+        check('email')
+            .normalizeEmail()
+            .isEmail(),
+        check('password').isLength({min: 9})
+    ],
+    usersController.login);
 
 module.exports = router;
