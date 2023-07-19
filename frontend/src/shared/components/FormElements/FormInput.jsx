@@ -102,6 +102,7 @@ export default function FormInput({
                     helperText={hasError ? errorText : ''}
                     onChange={changeHandler}
                     onBlur={touchHandler}
+                    type="password"
                 />
             );
         }

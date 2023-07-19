@@ -17,6 +17,8 @@ import {
 import EditPlace from './places/pages/EditPlace'
 import LogIn from "./user/pages/LogIn";
 import SignUp from "./user/pages/SignUp";
+import {AuthenticationContext} from "./shared/context/AuthenticationContext";
+import {useContext} from "react";
 
 const DummyUsersList = [
     {
@@ -34,34 +36,49 @@ const DummyUsersList = [
 ]
 
 function App() {
+    const {isAuthenticated} = useContext(AuthenticationContext);
+
+    let routes;
+    if (isAuthenticated) {
+        routes = (
+            <Switch>
+                <Route path="/" exact>
+                    <Users/>
+                </Route>
+                <Route path="/my-places" exact>
+                    <h1>My Places</h1>
+                </Route>
+                <Route path="/:userId/places" exact>
+                    <UserPlaces/>
+                </Route>
+                <Route path="/add-place" exact>
+                    <AddPlace/>
+                </Route>
+                <Route path="/place/:placeId" exact>
+                    <EditPlace/>
+                </Route>
+                <Redirect to="/"/>
+            </Switch>
+        )
+    } else {
+        routes = (
+            <Switch>
+                <Route path="/log-in" exact>
+                    <LogIn/>
+                </Route>
+                <Route path="/sign-up" exact>
+                    <SignUp/>
+                </Route>
+                <Redirect to="/log-in"/>
+            </Switch>
+        )
+    }
+
     return (
-        <section id="trave-albania-main-container">
+        <section id="travel-albania-main-container">
             <Router>
-                <NavigationBar user={DummyUsersList[0]} isAuthenticated={false}/>
-                <Switch>
-                    <Route path="/" exact>
-                        <Users/>
-                    </Route>
-                    <Route path="/my-places" exact>
-                        <h1>My Places</h1>
-                    </Route>
-                    <Route path="/:userId/places" exact>
-                        <UserPlaces/>
-                    </Route>
-                    <Route path="/add-place">
-                        <AddPlace/>
-                    </Route>
-                    <Route path="/place/:placeId" exact>
-                        <EditPlace/>
-                    </Route>
-                    <Route path="/log-in" exact>
-                        <LogIn/>
-                    </Route>
-                    <Route path="/sign-up" exact>
-                        <SignUp/>
-                    </Route>
-                    <Redirect to="/"/>
-                </Switch>
+                <NavigationBar user={DummyUsersList[0]}/>
+                {routes}
             </Router>
         </section>
     )

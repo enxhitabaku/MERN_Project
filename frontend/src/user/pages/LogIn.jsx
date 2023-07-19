@@ -14,8 +14,11 @@ import {
 } from "../../shared/constants/form-fields-constants";
 import Box from "@mui/material/Box";
 import {Button, CardActions} from "@mui/material";
+import {useContext} from "react";
+import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
 
 export default function LogIn() {
+    const {onLogIn} = useContext(AuthenticationContext);
     const [formState, inputHandler] = useForm(
         {
             EMAIL_FIELD_ID: {
@@ -32,6 +35,9 @@ export default function LogIn() {
     function logInHandler(event) {
         event.preventDefault()
         console.log(formState.inputs)
+        if (formState.isValid) {
+            onLogIn()
+        }
     }
 
 
