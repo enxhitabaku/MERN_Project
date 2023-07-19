@@ -77,6 +77,11 @@ export default function EditPlace() {
         console.log(formState.inputs)
     }
 
+    function placeCancelHandler(event) {
+        event.preventDefault()
+        window.history.back()
+    }
+
     if (isLoading) {
         return (
             <section id="edit-place-section">
@@ -144,6 +149,7 @@ export default function EditPlace() {
                                 size="small"
                                 variant="contained"
                                 color="error"
+                                onClick={placeCancelHandler}
                             >
                                 Cancel
                             </Button>

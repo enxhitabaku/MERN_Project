@@ -16,6 +16,7 @@ import {
 } from 'react-router-dom'
 import EditPlace from './places/pages/EditPlace'
 import LogIn from "./user/pages/LogIn";
+import SignUp from "./user/pages/SignUp";
 
 const DummyUsersList = [
     {
@@ -55,6 +56,9 @@ function App() {
                     </Route>
                     <Route path="/log-in" exact>
                         <LogIn/>
+                    </Route>
+                    <Route path="/sign-up" exact>
+                        <SignUp/>
                     </Route>
                     <Redirect to="/"/>
                 </Switch>

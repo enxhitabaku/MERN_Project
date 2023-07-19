@@ -1,4 +1,4 @@
-import {TextField} from '@mui/material'
+import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField} from '@mui/material'
 
 import {useEffect, useReducer} from 'react'
 
@@ -6,10 +6,11 @@ import {validate} from '../../utils/validators'
 import ImageUploader from './ImageUploader'
 import {
     FILE_INPUT_TYPE,
-    PASSWORD_INPUT_TYPE,
+    PASSWORD_INPUT_TYPE, RADIO_BUTTON_TYPE, RADIO_VALID_VALUES,
     SIMPLE_INPUT_TYPE,
     TEXT_AREA_INPUT_TYPE
 } from "../../constants/form-fields-constants";
+import FormHelperText from "@mui/material/FormHelperText";
 
 const inputReducer = (state, action) => {
     switch (action.type) {
@@ -119,6 +120,32 @@ export default function FormInput({
                     rows={8}
                 />
             );
+        }
+        case RADIO_BUTTON_TYPE: {
+            return (
+                <FormControl>
+                    <FormLabel>{label ?? ""}</FormLabel>
+                    <RadioGroup
+                        id={id}
+                        value={inputState.value}
+                        required={isRequired ?? false}
+                        defaultValue={defaultValue ?? ""}
+                        error={hasError}
+                        onChange={changeHandler}
+                        onBlur={touchHandler}
+                        row
+                        aria-labelledby="demo-controlled-radio-buttons-group"
+                        name="gender-radio-buttons-group"
+
+                    >
+                        <FormControlLabel value={RADIO_VALID_VALUES["F"].value} control={<Radio/>}
+                                          label={RADIO_VALID_VALUES["F"].label}/>
+                        <FormControlLabel value={RADIO_VALID_VALUES["M"].value} control={<Radio/>}
+                                          label={RADIO_VALID_VALUES["M"].label}/>
+                    </RadioGroup>
+                    <FormHelperText>{hasError ? errorText : ''}</FormHelperText>
+                </FormControl>
+            )
         }
         case FILE_INPUT_TYPE: {
             return (

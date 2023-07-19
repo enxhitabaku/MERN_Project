@@ -27,7 +27,7 @@ li.user-list-item .MuiCard-root:hover {
 }
 
 /* Uset List Style */
-#users-list-section, #log-in-section {
+#users-list-section, #log-in-section, #sign-up-section {
     display: flex;
     justify-content: center;
     margin: 20px;
