@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 
 import {
+    authorizationList,
     navLinksList,
     settingsList,
 } from '../../constants/navigation-bar-constants'
 
-export function NavigationLinks({ onClick }) {
+export function NavigationLinks({onClick}) {
     return (
         <>
             {navLinksList.map((navLink) => (
@@ -24,7 +25,7 @@ export function NavigationLinks({ onClick }) {
     )
 }
 
-export function ResponsiveNavigationLinks({ onClick }) {
+export function ResponsiveNavigationLinks({onClick}) {
     return (
         <>
             {navLinksList.map((navLink) => (
@@ -46,7 +47,7 @@ export function ResponsiveNavigationLinks({ onClick }) {
     )
 }
 
-export function SettingsLinks({ onClick }) {
+export function SettingsLinks({onClick}) {
     return (
         <>
             {settingsList.map((setting) => (
@@ -59,5 +60,23 @@ export function SettingsLinks({ onClick }) {
                 </Link>
             ))}
         </>
+    )
+}
+
+export function AuthorizationLinks({onClick}) {
+    return (
+        <div style={{display: "flex", gap: "15px"}} id="authorization-links">
+            {authorizationList.map((auth) => (
+                <Link key={auth.label} to={auth.urlPath}>
+                    <Button
+                        variant="outlined"
+                        key={auth.label}
+                        onClick={onClick}
+                    >
+                        {auth.label}
+                    </Button>
+                </Link>
+            ))}
+        </div>
     )
 }

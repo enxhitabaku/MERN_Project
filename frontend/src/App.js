@@ -15,6 +15,8 @@ import {
     Redirect,
 } from 'react-router-dom'
 import EditPlace from './places/pages/EditPlace'
+import LogIn from "./user/pages/LogIn";
+import SignUp from "./user/pages/SignUp";
 
 const DummyUsersList = [
     {
@@ -35,24 +37,30 @@ function App() {
     return (
         <section id="trave-albania-main-container">
             <Router>
-                <NavigationBar user={DummyUsersList[0]} />
+                <NavigationBar user={DummyUsersList[0]} isAuthenticated={false}/>
                 <Switch>
                     <Route path="/" exact>
-                        <Users />
+                        <Users/>
                     </Route>
                     <Route path="/my-places" exact>
                         <h1>My Places</h1>
                     </Route>
                     <Route path="/:userId/places" exact>
-                        <UserPlaces />
+                        <UserPlaces/>
                     </Route>
                     <Route path="/add-place">
-                        <AddPlace />
+                        <AddPlace/>
                     </Route>
                     <Route path="/place/:placeId" exact>
-                        <EditPlace />
+                        <EditPlace/>
                     </Route>
-                    <Redirect to="/" />
+                    <Route path="/log-in" exact>
+                        <LogIn/>
+                    </Route>
+                    <Route path="/sign-up" exact>
+                        <SignUp/>
+                    </Route>
+                    <Redirect to="/"/>
                 </Switch>
             </Router>
         </section>

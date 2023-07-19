@@ -19,6 +19,7 @@ li.user-list-item .MuiCard-root:hover {
     font-size: 20px;
     margin: 0 0 10px 0;
 }
+
 .place-count-container {
     font-size: 16px;
     margin: 0;
@@ -26,7 +27,8 @@ li.user-list-item .MuiCard-root:hover {
 }
 
 /* Uset List Style */
-#users-list-section {
+#users-list-section, #log-in-section, #sign-up-section {
     display: flex;
     justify-content: center;
+    margin: 20px;
 }
