@@ -1,70 +1,17 @@
 const express = require('express');
-const HttpError = require("../models/http-error");
 
+const placesController = require('../controllers/places-controller')
 const router = express.Router();
 
-const DummyPlaceList = [
-    {
-        id: '1',
-        title: 'Berat View',
-        description: 'Nice view.',
-        address: 'Berat',
-        location: {
-            latitude: 41,
-            longitude: 20,
-        },
-        creatorId: '1',
-    },
-    {
-        id: '2',
-        title: 'Saranda View',
-        description: 'Nice dinner.',
-        address: 'Saranda',
-        location: {
-            latitude: 30,
-            longitude: 10,
-        },
-        creatorId: '1',
-    },
-]
-
-router.get('/:pid', (req, res, next) => {
-    const placeId = req.params.pid
-    const place = DummyPlaceList.find((p) => p.id === placeId);
-
-    if (!place) {
-        return next(
-            new HttpError('Could not find a place for the provided id.', 404)
-        )
-    }
-
-    res.json({place}); // => { place } => { place: place }
-});
+router.get('/:pid', placesController.getPlaceById);
 
 
-router.get('/user/:uid', (req, res, next) => {
-    const userId = req.params.uid
-    const place = DummyPlaceList.find((p) => p.creatorId === userId);
+router.get('/user/:uid', placesController.getPlacesByUserId);
 
-    if (!place) {
-        return next(
-            new HttpError('Could not find a place for the provided user id.', 404)
-        );
-    }
+router.post('/', placesController.createPlace);
 
-    res.json({place});
-});
+router.patch('/:pid', placesController.updatePlace);
 
-router.post('/', (req, res, next) => {
-
-});
-
-router.patch('/:pid', (req, res, next) => {
-
-});
-
-router.delete('/', (req, res, next) => {
-
-});
+router.delete('/', placesController.deletePlace);
 
 module.exports = router;

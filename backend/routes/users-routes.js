@@ -1,5 +1,6 @@
 const express = require('express');
 
+const usersController = require('../controllers/users-controller')
 const router = express.Router();
 
 const DummyUsersList = [
@@ -15,19 +16,10 @@ const DummyUsersList = [
     },
 ]
 
-router.get('/:uid', (req, res, next) => {
-    const userId = req.params.uid
-    const user = DummyUsersList.find((u) => u.id === userId);
+router.get('/', usersController.getUsers);
 
-    res.json({user})
-});
+router.post('/sign-up', usersController.signup);
 
-router.post('/sign-up', (req, res, next) => {
-
-});
-
-router.post('/log-in', (req, res, next) => {
-
-});
+router.post('/log-in', usersController.login);
 
 module.exports = router;
