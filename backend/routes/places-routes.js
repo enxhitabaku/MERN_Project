@@ -12,6 +12,6 @@ router.post('/', validatePlaceParamsOnCreate, placesController.createPlace);
 
 router.patch('/:pid', validatePlaceParamOnUpdate, placesController.updatePlace);
 
-router.delete('/', placesController.deletePlace);
+router.delete('/:pid', placesController.deletePlace);
 
 module.exports = router;
