@@ -1,59 +1,50 @@
 const {validationResult} = require('express-validator');
-const uuid = require('uuid');
-
 const HttpError = require('../models/http-error');
+const {
+    createNewUserOnDatabase,
+    authenticateUser,
+    retrieveAllUsersFromDatabase
+} = require("../database/services/user-service");
 
-const DUMMY_USERS = [
-    {
-        id: 'u1',
-        gender: 'male',
-        email: 'test@test.com',
-        password: 'testers'
+async function getUsers(req, res, next) {
+    const allUsersResponse = await retrieveAllUsersFromDatabase();
+    if (!allUsersResponse.success) {
+        const httpError = new HttpError(allUsersResponse.message, allUsersResponse.httpStatusCode);
+        return next(httpError);
     }
-];
-
-function getUsers(req, res, next) {
-    res.json({users: DUMMY_USERS});
+    res.status(allUsersResponse.httpStatusCode).json(allUsersResponse.result);
 }
 
-function signup(req, res, next) {
+async function signup(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
 
     const {gender, email, password} = req.body;
 
-    const hasUser = DUMMY_USERS.find(u => u.email === email);
-    if (hasUser) {
-        throw new HttpError('Could not create user, email already exists.', 422);
+    const newUserResponse = await createNewUserOnDatabase(gender, email, password);
+    if (!newUserResponse.success) {
+        const httpError = new HttpError(newUserResponse.result, newUserResponse.httpStatusCode);
+        return next(httpError);
     }
 
-    const createdUser = {
-        id: uuid.v4(),
-        gender,
-        email,
-        password
-    };
-
-    DUMMY_USERS.push(createdUser);
-
-    res.status(201).json({user: createdUser});
+    res.status(newUserResponse.httpStatusCode).json(newUserResponse.result);
 }
 
-function login(req, res, next) {
-    if (!identifiedUser || identifiedUser.password !== password) {
-        throw new HttpError('Could not identify user, credentials seem to be wrong.', 401);
-    }
+async function login(req, res, next) {
 
     const {email, password} = req.body;
 
-    const identifiedUser = DUMMY_USERS.find(u => u.email === email);
-    if (!identifiedUser || identifiedUser.password !== password) {
-        throw new HttpError('Could not identify user, credentials seem to be wrong.', 401);
+    const authenticateUserResponse = await authenticateUser(email, password);
+    if (!authenticateUserResponse.success) {
+        const httpError = new HttpError(authenticateUserResponse.message, authenticateUserResponse.httpStatusCode);
+        return next(httpError);
     }
 
-    res.json({message: 'Logged in!'});
+    res.status(authenticateUserResponse.httpStatusCode).json(authenticateUserResponse.result);
 }
 
 module.exports = {

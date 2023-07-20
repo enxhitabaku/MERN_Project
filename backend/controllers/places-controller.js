@@ -1,7 +1,12 @@
 const {validationResult} = require('express-validator');
-const uuid = require('uuid');
 
 const HttpError = require("../models/http-error");
+const {
+    createNewPlace,
+    createNewPlaceOnDatabase,
+    retrievePlaceByIdFromDatabase, retrievePlaceByUserIdFromDatabase, updateExistingPlaceOnDatabase,
+    deleteExistingPlaceFromDatabase
+} = require("../database/services/place-service");
 
 let DummyPlaceList = [
     {
@@ -28,81 +33,81 @@ let DummyPlaceList = [
     },
 ]
 
-function getPlaceById(req, res, next) {
+async function getPlaceById(req, res, next) {
     const placeId = req.params.pid
-    const place = DummyPlaceList.find((p) => p.id === placeId);
 
-    if (!place) {
+    const placeResponse = await retrievePlaceByIdFromDatabase(placeId);
+    if (!placeResponse.success) {
+        const httpError = new HttpError(placeResponse.message, placeResponse.httpStatusCode);
+        return next(httpError);
+    }
+
+    res.status(placeResponse.httpStatusCode).json({place: placeResponse.result});
+}
+
+async function getPlacesByUserId(req, res, next) {
+    const userId = req.params.uid;
+    const placesListResponse = await retrievePlaceByUserIdFromDatabase(userId);
+    if (!placesListResponse.success) {
+        const httpError = new HttpError(placesListResponse.message, placesListResponse.httpStatusCode);
+        return next(httpError);
+    }
+
+    res.status(200).json(placesListResponse.result);
+}
+
+const DUMMY_IMAGE_SRC = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg'
+
+async function createPlace(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
         return next(
-            new HttpError('Could not find a place for the provided id.', 404)
+            new HttpError('Invalid inputs passed, please check your data.', 422)
         )
     }
 
-    res.json({place});
+    const {title, description, location, creatorId} = req.body;
+
+    const createNewPlaceResponse = await createNewPlaceOnDatabase(title, description, location, DUMMY_IMAGE_SRC, creatorId);
+    if (!createNewPlaceResponse.success) {
+        const httpError = new HttpError(createNewPlaceResponse.message, createNewPlaceResponse.httpStatusCode);
+        return next(httpError);
+    }
+
+    res.status(createNewPlaceResponse.httpStatusCode).json(createNewPlaceResponse.result);
 }
 
-function getPlacesByUserId(req, res, next) {
-    const userId = req.params.uid
-    const places = DummyPlaceList.filter((p) => p.creatorId === userId);
-
-    if (!place || places.length === 0) {
+async function updatePlace(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
         return next(
-            new HttpError('Could not find any place for the provided user id.', 404)
-        );
-    }
-
-    res.json({places});
-}
-
-function createPlace(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
-    }
-
-    const {title, description, location, address, creatorId} = req.body;
-
-    const createdPlace = {
-        id: uuid.v4(),
-        title,
-        description,
-        address,
-        location,
-        creatorId
-    }
-
-    DummyPlaceList.push(createdPlace);
-
-    res.status(201).json(createdPlace);
-}
-
-function updatePlace(req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
 
     const {title, description} = req.body;
     const placeId = req.params.pid;
 
-    const updatedPlace = {...DummyPlaceList.find(p => p.id === placeId)};
-    const placeIndex = DummyPlaceList.findIndex(p => p.id === placeId);
-    updatedPlace.title = title;
-    updatedPlace.description = description;
-
-    DummyPlaceList[placeIndex] = updatedPlace;
-
-    res.status(200).json({place: updatedPlace});
-};
-
-function deletePlace(req, res, next) {
-    const placeId = req.params.pid;
-    if (!DummyPlaceList.find(p => p.id === placeId)) {
-        throw new HttpError('Could not find a place for that id.', 404);
+    const placeUpdateResponse = await updateExistingPlaceOnDatabase(placeId, title, description);
+    if (!placeUpdateResponse.success) {
+        const httpError = new HttpError(placeUpdateResponse.message, placeUpdateResponse.httpStatusCode);
+        return next(httpError);
     }
-    DummyPlaceList = DummyPlaceList.filter(p => p.id !== placeId);
-    res.status(200).json({message: 'Deleted place.'});
-};
+
+    res.status(placeUpdateResponse.httpStatusCode).json(placeUpdateResponse.result);
+}
+
+async function deletePlace(req, res, next) {
+    const placeId = req.params.pid;
+    const deletePlaceResponse = await deleteExistingPlaceFromDatabase(placeId);
+
+    if (!deletePlaceResponse.success) {
+        const httpError = new HttpError(deletePlaceResponse.message, deletePlaceResponse.httpStatusCode);
+        return next(httpError);
+    }
+
+    res.status(deletePlaceResponse.httpStatusCode).json(deletePlaceResponse.result);
+}
 
 module.exports = {
     getPlaceById: getPlaceById,
