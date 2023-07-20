@@ -30,5 +30,10 @@ li.user-list-item .MuiCard-root:hover {
 #users-list-section, #log-in-section, #sign-up-section {
     display: flex;
     justify-content: center;
-    margin: 20px;
+    margin: 25px 15px;
+}
+
+.auth-form-action-buttons-container {
+    display: flex;
+    justify-content: center;
 }

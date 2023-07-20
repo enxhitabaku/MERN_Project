@@ -1,4 +1,3 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import '../styles/user-style.css'
@@ -75,7 +74,7 @@ export default function SignUp() {
                             />
                         </Box>
                     </CardContent>
-                    <CardActions style={{display: "flex", justifyContent: "center"}}>
+                    <CardActions className="auth-form-action-buttons-container">
                         <Button
                             type="submit"
                             size="small"

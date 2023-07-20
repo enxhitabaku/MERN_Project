@@ -1,5 +1,5 @@
-import { Avatar, CardContent } from '@mui/material'
-import { Link } from 'react-router-dom'
+import {Avatar, CardContent} from '@mui/material'
+import {Link} from 'react-router-dom'
 import Card from '@mui/material/Card'
 import '../styles/user-style.css'
 
@@ -9,7 +9,7 @@ import '../styles/user-style.css'
  * @param {{user: User}} user
  * @returns {JSX.Element}
  * */
-export default function UserItem({ user }) {
+export default function UserItem({user}) {
     function generatePlaceCountLabel() {
         return user.placeCount === 1 ? 'Place' : 'Places'
     }
@@ -20,7 +20,7 @@ export default function UserItem({ user }) {
                 <Link to={`/${user.id}/places`}>
                     <CardContent className="card-content">
                         <Avatar
-                            alt={user.fullName}
+                            alt={`Avatar Icon of user ${user.fullName}`}
                             src={user.imageSrc}
                             size="lg"
                         />

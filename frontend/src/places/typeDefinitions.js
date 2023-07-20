@@ -4,7 +4,6 @@
  * @property {string} title
  * @property {string} description
  * @property {string} imageSrc
- * @property {string} address
  * @property {Location} location
  * @property {string} creatorId
  **/
