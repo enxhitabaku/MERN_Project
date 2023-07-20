@@ -7,7 +7,8 @@ function validatePlaceParamsOnCreate() {
             .isEmpty(),
         check('description').isLength({min: 5}),
         check('location.latitude')
-            .isFloat({min: 1}),
+            .isString()
+            .matches(/^[1-9]\d*$/),
         check('location.longitude')
             .isFloat({min: 1})
     ]
