@@ -2,7 +2,7 @@ import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField} 
 
 import {useEffect, useReducer} from 'react'
 
-import {validate} from '../../utils/validators'
+import inputReducer from './utils/input-reducer'
 import ImageUploader from './ImageUploader'
 import {
     FILE_INPUT_TYPE,
@@ -11,26 +11,6 @@ import {
     TEXT_AREA_INPUT_TYPE
 } from "../../constants/form-fields-constants";
 import FormHelperText from "@mui/material/FormHelperText";
-
-const inputReducer = (state, action) => {
-    switch (action.type) {
-        case 'CHANGE':
-            return {
-                ...state,
-                value: action.val,
-                isValid: validate(action.val, action.validators),
-            }
-        case 'TOUCH': {
-            return {
-                ...state,
-                isTouched: true,
-            }
-        }
-        default: {
-            return state
-        }
-    }
-}
 
 export default function FormInput({
                                       id,
@@ -53,7 +33,7 @@ export default function FormInput({
         onInput(id, inputState.value, inputState.isValid)
     }, [id, inputState.value, inputState.isValid, onInput])
 
-    const changeHandler = (event) => {
+    function changeHandler(event) {
         dispatch({
             type: 'CHANGE',
             val: event.target.value,
@@ -61,7 +41,7 @@ export default function FormInput({
         })
     }
 
-    const changeFileHandler = (files) => {
+    function changeFileHandler(files) {
         dispatch({
             type: 'CHANGE',
             val: files,
@@ -69,7 +49,7 @@ export default function FormInput({
         })
     }
 
-    const touchHandler = () => {
+    function touchHandler() {
         dispatch({
             type: 'TOUCH',
         })
@@ -128,7 +108,6 @@ export default function FormInput({
                     <FormLabel>{label ?? ""}</FormLabel>
                     <RadioGroup
                         id={id}
-                        value={inputState.value}
                         required={isRequired ?? false}
                         defaultValue={defaultValue ?? ""}
                         error={hasError}
