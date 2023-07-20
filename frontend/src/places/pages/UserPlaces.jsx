@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import PlaceList from '../components/PlaceList'
 import Berat from '../../static/images/places/berat.jpg'
 
@@ -9,7 +9,6 @@ const DummyPlaceList = [
         title: 'Berat View',
         description: 'Nice view.',
         imageSrc: Berat,
-        adddress: 'Berat',
         location: {
             latitude: 41,
             longitude: 20,
@@ -29,7 +28,7 @@ export default function UserPlaces() {
 
     return (
         <>
-            <PlaceList places={loadedPlaces()} />
+            <PlaceList places={loadedPlaces()}/>
         </>
     )
 }

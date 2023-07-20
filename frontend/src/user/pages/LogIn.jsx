@@ -40,7 +40,6 @@ export default function LogIn() {
         }
     }
 
-
     return (
         <section id="log-in-section">
             <form id="log-in-form">
@@ -69,7 +68,7 @@ export default function LogIn() {
                             />
                         </Box>
                     </CardContent>
-                    <CardActions style={{display: "flex", justifyContent: "center"}}>
+                    <CardActions className="auth-form-action-buttons-container">
                         <Button
                             type="submit"
                             size="small"
