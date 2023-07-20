@@ -42,7 +42,7 @@ li.place-list-item {
 
 #coordinates-fields-container {
     display: flex;
-    flex: row;
+    flex-flow: row;
     gap: 10px;
 }
 

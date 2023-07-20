@@ -24,7 +24,6 @@ const DummyPlaceList = [
         title: 'Berat View',
         description: 'Nice view.',
         imageSrc: Berat,
-        address: 'Berat',
         location: {
             latitude: 41,
             longitude: 20,
@@ -51,6 +50,7 @@ export default function EditPlace() {
         false
     );
 
+    /**@type {Place}*/
     const identifiedPlace = DummyPlaceList.find(p => p.id === placeId);
 
     useEffect(() => {
