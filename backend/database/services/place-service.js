@@ -1,5 +1,7 @@
 const Place = require("../models/place");
+const User = require("../models/user");
 const ServiceResponse = require("../../shared/service-response");
+const mongoose = require("mongoose");
 
 async function retrievePlaceByIdFromDatabase(placeId) {
     try {
@@ -36,7 +38,21 @@ async function createNewPlaceOnDatabase(title, description, location, image, cre
     });
 
     try {
-        await createdPlace.save();
+        const user = await User.findById(creatorId);
+        if (!user) {
+            return ServiceResponse.error('Could not find user for provided id.', 404);
+        }
+
+        //Started a session to run tasks sequentially. i.e the place creation and the update of user places with the newly created one
+        const createPlaceSession = await mongoose.startSession();
+        createPlaceSession.startTransaction();
+
+        await createdPlace.save({session: createPlaceSession});
+        user.places.push(createdPlace);
+        await user.save({session: createPlaceSession});
+
+        await createPlaceSession.commitTransaction();
+
         return ServiceResponse.success(createdPlace, 201);
     } catch (err) {
         return ServiceResponse.error('Creating place failed, please try again.', 500);
@@ -63,12 +79,21 @@ async function updateExistingPlaceOnDatabase(placeId, title, description) {
 
 async function deleteExistingPlaceFromDatabase(placeId) {
     try {
-        const place = await Place.findById(placeId);
+        const place = await Place.findById(placeId).populate('creatorId');
         if (!place) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
         }
 
-        await place.deleteOne();
+        //Started a session to run tasks sequentially. i.e the place deletion and unlink it from the creator based on his id
+        const deleteSession = await mongoose.startSession();
+        deleteSession.startTransaction();
+
+        await place.deleteOne({session: deleteSession});
+        place.creatorId.places.pull(place);
+        await place.creatorId.save({session: deleteSession});
+
+        await deleteSession.commitTransaction();
+
         return ServiceResponse.success({message: "Place Deleted Successfully!"}, 204);
     } catch (err) {
         return ServiceResponse.error('Something went wrong, could not delete place.', 500);

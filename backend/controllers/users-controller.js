@@ -23,9 +23,9 @@ async function signup(req, res, next) {
         )
     }
 
-    const {gender, email, password, places} = req.body;
+    const {gender, email, password} = req.body;
 
-    const newUserResponse = await createNewUserOnDatabase(gender, email, password, places);
+    const newUserResponse = await createNewUserOnDatabase(gender, email, password);
     if (!newUserResponse.success) {
         const httpError = new HttpError(newUserResponse.result, newUserResponse.httpStatusCode);
         return next(httpError);

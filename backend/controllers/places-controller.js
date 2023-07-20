@@ -46,7 +46,7 @@ async function getPlaceById(req, res, next) {
 }
 
 async function getPlacesByUserId(req, res, next) {
-    const userId = req.params.uid
+    const userId = req.params.uid;
     const placesListResponse = await retrievePlaceByUserIdFromDatabase(userId);
     if (!placesListResponse.success) {
         const httpError = new HttpError(placesListResponse.message, placesListResponse.httpStatusCode);
@@ -106,7 +106,7 @@ async function deletePlace(req, res, next) {
         return next(httpError);
     }
 
-    res.status(deletePlaceResponse.httpStatusCode);
+    res.status(deletePlaceResponse.httpStatusCode).json(deletePlaceResponse.result);
 }
 
 module.exports = {

@@ -3,7 +3,7 @@ const ServiceResponse = require("../../shared/service-response");
 
 const DUMMY_IMAGE_SRC = 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg';
 
-async function createNewUserOnDatabase(gender, email, password, places) {
+async function createNewUserOnDatabase(gender, email, password) {
     try {
         const existingUser = await User.findOne({email: email})
         if (existingUser) {
@@ -15,7 +15,7 @@ async function createNewUserOnDatabase(gender, email, password, places) {
             email,
             image: DUMMY_IMAGE_SRC,
             password,
-            places
+            places: []
         });
 
         await createdUser.save();
