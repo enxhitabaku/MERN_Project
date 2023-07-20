@@ -1,7 +1,7 @@
 const {validationResult} = require('express-validator');
-const uuid = require('uuid');
 
 const HttpError = require("../models/http-error");
+const Place = require("../database/models/place")
 
 let DummyPlaceList = [
     {
@@ -54,24 +54,33 @@ function getPlacesByUserId(req, res, next) {
     res.json({places});
 }
 
-function createPlace(req, res, next) {
+async function createPlace(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
 
-    const {title, description, location, address, creatorId} = req.body;
+    const {title, description, location, creatorId} = req.body;
 
-    const createdPlace = {
-        id: uuid.v4(),
+    const createdPlace = new Place({
         title,
         description,
-        address,
-        location,
+        location: location,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg',
         creatorId
-    }
+    });
 
-    DummyPlaceList.push(createdPlace);
+    try {
+        await createdPlace.save();
+    } catch (err) {
+        const error = new HttpError(
+            'Creating place failed, please try again.',
+            500
+        );
+        return next(error);
+    }
 
     res.status(201).json(createdPlace);
 }
@@ -79,7 +88,9 @@ function createPlace(req, res, next) {
 function updatePlace(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        throw new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(
+            new HttpError('Invalid inputs passed, please check your data.', 422)
+        )
     }
 
     const {title, description} = req.body;
@@ -98,7 +109,9 @@ function updatePlace(req, res, next) {
 function deletePlace(req, res, next) {
     const placeId = req.params.pid;
     if (!DummyPlaceList.find(p => p.id === placeId)) {
-        throw new HttpError('Could not find a place for that id.', 404);
+        return next(
+            new HttpError('Could not find a place for that id.', 404)
+        )
     }
     DummyPlaceList = DummyPlaceList.filter(p => p.id !== placeId);
     res.status(200).json({message: 'Deleted place.'});
