@@ -17,7 +17,6 @@ function checkAuth(req, res, next) {
         req.userData = {id: decodedToken.userId}
         next();
     } catch (err) {
-        console.log(err);
         const httpError = new HttpError("Authentication failed!", 401);
         return next(httpError);
     }
