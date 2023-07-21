@@ -4,6 +4,11 @@ li.place-list-item {
     margin-bottom: 20px;
 }
 
+.place-list-item-image {
+    margin: auto;
+    padding: 10px;
+}
+
 .place-list-item-content,
 .place-list-item-image,
 .place-card-action-buttons-container {

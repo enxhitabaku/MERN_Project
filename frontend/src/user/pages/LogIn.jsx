@@ -53,7 +53,7 @@ export default function LogIn() {
                 );
                 doAuthenticate(response.user.id, response.user.token);
             } catch (err) {
-                console.error(err);
+                console.log(err);
             }
         }
     }

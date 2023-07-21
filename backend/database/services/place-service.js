@@ -80,7 +80,6 @@ async function updateExistingPlaceOnDatabase(userId, placeId, title, description
         await place.save();
         return ServiceResponse.success({place: place.toObject({getters: true})}, 200);
     } catch (err) {
-        console.error(err);
         return ServiceResponse.error('Something went wrong, could not update place.', 500);
     }
 }
@@ -92,7 +91,7 @@ async function deleteExistingPlaceFromDatabase(placeId, userId) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
         }
 
-        if (place.creatorId.toString() !== userId.toString()) {
+        if (place.creatorId._id.toString() !== userId.toString()) {
             return ServiceResponse.error('You are not authorized to delete this place.', 401);
         }
 
