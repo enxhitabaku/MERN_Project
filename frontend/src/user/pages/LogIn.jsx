@@ -52,7 +52,7 @@ export default function LogIn() {
                     }
                 );
 
-                doAuthenticate(responseData.user);
+                doAuthenticate(responseData.user.id);
             } catch (err) {
                 console.error(err);
             }

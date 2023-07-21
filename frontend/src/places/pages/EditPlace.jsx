@@ -1,3 +1,4 @@
+import '../styles/user-places-style.css'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
 import Card from '@mui/material/Card'
@@ -5,7 +6,6 @@ import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import {Button, CardActions} from '@mui/material'
 import {useParams} from 'react-router-dom/cjs/react-router-dom.min'
-import '../styles/user-places-style.css'
 import CircularProgress from '@mui/material/CircularProgress';
 import useForm from '../../shared/hooks/place-form-hook'
 import {
@@ -32,7 +32,7 @@ const INITIAL_INPUT_VALUES = {
 }
 
 export default function EditPlace() {
-    const {user} = useContext(AuthenticationContext);
+    const {userId} = useContext(AuthenticationContext);
     const {isLoading, error, sendRequest} = useHttpClient();
     const [loadedPlace, setLoadedPlace] = useState();
     const history = useHistory();
@@ -77,7 +77,7 @@ export default function EditPlace() {
                     'Content-Type': 'application/json'
                 }
             );
-            history.push(`${user.id}/places`);
+            history.push(`${userId}/places`);
         } catch (err) {
             console.log(err);
         }
@@ -85,7 +85,7 @@ export default function EditPlace() {
 
     function placeCancelHandler(event) {
         event.preventDefault()
-        history.push(`${user.id}/places`);
+        history.push(`${userId}/places`);
     }
 
     if (isLoading) {

@@ -1,14 +1,5 @@
 import {createContext, useState} from "react";
 
-/**@type{User}*/
-const INITIAL_USER_ENTITY = {
-    id: "",
-    email: "",
-    gender: "",
-    /**@type{Place[]}*/
-    places: []
-}
-
 export const AuthenticationContext = createContext({
     doAuthenticate: () => {
     },
@@ -16,22 +7,22 @@ export const AuthenticationContext = createContext({
     },
     /**@type{boolean}*/
     isAuthenticated: false,
-    /**@type{User}*/
-    user: INITIAL_USER_ENTITY
+    /**@type{string}*/
+    userId: ""
 });
 
 export function AuthenticationContextProvider(props) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState(undefined);
+    const [userId, setUserId] = useState("");
 
-    /**@param{User} user*/
-    function authenticate(user) {
-        setUser(user);
+    /**@param{string} userId*/
+    function authenticate(userId) {
+        setUserId(userId);
         setIsAuthenticated(true);
     }
 
     function onLogOut() {
-        setUser(INITIAL_USER_ENTITY);
+        setUserId("");
         setIsAuthenticated(false);
     }
 
@@ -40,7 +31,7 @@ export function AuthenticationContextProvider(props) {
             doAuthenticate: authenticate,
             onLogOut,
             isAuthenticated,
-            user
+            userId
         }}>
             {props.children}
         </AuthenticationContext.Provider>

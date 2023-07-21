@@ -2,7 +2,20 @@ require('dotenv').config();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const ServiceResponse = require("../../shared/service-response");
-const {createJWT, mapToPartialUserData} = require("../../services/security-service");
+const {createJWT, mapToPartialUserData} = require("../../shared/utils");
+
+async function retrieveUserFromDatabase(userId) {
+    try {
+        //On user retrival the password field will be omitted for security reasons
+        const user = await User.findOne({id: userId}, '-password');
+        if (!user) {
+            return ServiceResponse.error(`Unable to find user with id ${userId}`, 404);
+        }
+        return ServiceResponse.success({user: user}, 200)
+    } catch (err) {
+        return ServiceResponse.error('Fetching user failed, please try again later.', 500);
+    }
+}
 
 async function retrieveAllUsersFromDatabase() {
     try {
@@ -62,6 +75,7 @@ async function authenticateUser(email, password) {
 }
 
 module.exports = {
+    retrieveUserFromDatabase,
     createNewUserOnDatabase,
     authenticateUser,
     retrieveAllUsersFromDatabase

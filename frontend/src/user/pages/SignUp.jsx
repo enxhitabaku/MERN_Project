@@ -44,7 +44,7 @@ export default function SignUp() {
         event.preventDefault()
         if (formState.isValid) {
             try {
-                /**@type{User}*/
+                /**@type{{user: User}}*/
                 const responseData = await sendRequest(SIGN_UP_ENDPOINT, 'POST',
                     JSON.stringify({
                         gender: formState.inputs.RADIO_BUTTON_FIELD_ID.value,
@@ -55,7 +55,7 @@ export default function SignUp() {
                         'Content-Type': 'application/json'
                     }
                 );
-                doAuthenticate(responseData);
+                doAuthenticate(responseData.user.id);
             } catch (err) {
                 console.log(err);
             }

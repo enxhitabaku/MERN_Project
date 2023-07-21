@@ -7,6 +7,7 @@ const usersRoutes = require('./routes/users-routes');
 const {onNoHTTPStatusCodeDetected, onRouteNotFound, onInvalidFileSubmission} = require("./middleware/on-errors");
 const {databaseConnect} = require("./database/database-connection");
 const path = require("path");
+const checkAuth = require("./middleware/check-auth");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(onInvalidFileSubmission)
 
 app.use(onNoHTTPStatusCodeDetected);
 
+// app.use(checkAuth);
 
 databaseConnect()
     .then(() => {

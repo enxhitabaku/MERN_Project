@@ -15,11 +15,11 @@ import SignUp from "../../user/pages/SignUp";
 import NavigationBar from "./navigation/NavigationBar";
 
 export default function ApplicationRouter() {
-    const {isAuthenticated, user} = useContext(AuthenticationContext);
+    const {isAuthenticated} = useContext(AuthenticationContext);
 
     return (
         <Router>
-            <NavigationBar user={{user}}/>
+            <NavigationBar/>
             {isAuthenticated ?
                 <AuthenticatedRoutes/> :
                 <UnauthenticatedRoutes/>}

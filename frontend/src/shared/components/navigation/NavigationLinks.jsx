@@ -10,14 +10,14 @@ import {AuthenticationContext} from "../../context/AuthenticationContext";
 import {useContext} from "react";
 
 export function NavigationLinks({onClick, mobileView}) {
-    const {user} = useContext(AuthenticationContext);
+    const {userId} = useContext(AuthenticationContext);
     const navLinksList = [
         {
             urlPath: '/',
             label: 'Feed',
         },
         {
-            urlPath: `/${user.id}/places`,
+            urlPath: `/${userId}/places`,
             label: 'My Places',
         },
         {
@@ -30,7 +30,7 @@ export function NavigationLinks({onClick, mobileView}) {
         return (
             <>
                 <Link key={1} to={navLinksList[0].urlPath}>
-                    <Button key={1} onClick={onClick}
+                    <Button key={"1b"} onClick={onClick}
                             sx={{
                                 my: 2,
                                 color: 'white',
@@ -40,7 +40,7 @@ export function NavigationLinks({onClick, mobileView}) {
                     </Button>
                 </Link>
                 <Link key={2} to={navLinksList[1].urlPath}>
-                    <Button key={1} onClick={onClick}
+                    <Button key={"2b"} onClick={onClick}
                             sx={{
                                 my: 2,
                                 color: 'white',
@@ -50,7 +50,7 @@ export function NavigationLinks({onClick, mobileView}) {
                     </Button>
                 </Link>
                 <Link key={3} to={navLinksList[2].urlPath}>
-                    <Button key={2} onClick={onClick}
+                    <Button key={"3b"} onClick={onClick}
                             sx={{
                                 my: 2,
                                 color: 'white',
