@@ -8,8 +8,7 @@ import FormInput from '../../shared/components/FormElements/FormInput'
 import useForm from '../../shared/hooks/place-form-hook'
 import {
     VALIDATOR_REQUIRE,
-    VALIDATOR_COORDINATE,
-    VALIDATOR_FILE,
+    VALIDATOR_FILE, VALIDATOR_LATITUDE, VALIDATOR_LONGITUDE,
 } from '../../shared/utils/validators'
 import {
     FILE_UPLOAD_FIELD_ID,
@@ -57,21 +56,14 @@ export default function AddPlace() {
         event.preventDefault()
         if (formState.isValid) {
             try {
-                await sendRequest(ADD_PLACES_ENDPOINT, 'POST',
-                    JSON.stringify({
-                        image: "", //TODO: handle image upload
-                        title: formState.inputs.TITLE_FIELD_ID.value,
-                        description: formState.inputs.DESCRIPTION_FIELD_ID.value,
-                        location: {
-                            latitude: formState.inputs.LATITUDE_FIELD_ID.value,
-                            longitude: formState.inputs.LONGITUDE_FIELD_ID.value,
-                        },
-                        creatorId: user.id
-                    }),
-                    {
-                        'Content-Type': 'application/json'
-                    }
-                );
+                const formData = new FormData();
+                formData.append('image', formState.inputs.FILE_UPLOAD_FIELD_ID.value);
+                formData.append('title', formState.inputs.TITLE_FIELD_ID.value);
+                formData.append('description', formState.inputs.DESCRIPTION_FIELD_ID.value);
+                formData.append('latitude', formState.inputs.LATITUDE_FIELD_ID.value);
+                formData.append('longitude', formState.inputs.LONGITUDE_FIELD_ID.value);
+                formData.append('creatorId', user.id);
+                await sendRequest(ADD_PLACES_ENDPOINT, 'POST', formData);
                 history.push(`${user.id}/places`);
             } catch (err) {
                 console.log(err);
@@ -93,6 +85,7 @@ export default function AddPlace() {
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
                                 id={FILE_UPLOAD_FIELD_ID}
+                                label={"Place Image"}
                                 inputElementType={FILE_INPUT_TYPE}
                                 isValid={formState?.inputs?.FILE_UPLOAD_FIELD_ID?.isValid}
                                 errorText=""
@@ -126,8 +119,8 @@ export default function AddPlace() {
                                     label={"Latitude"}
                                     inputElementType={SIMPLE_INPUT_TYPE}
                                     isValid={formState?.inputs?.LATITUDE_FIELD_ID?.isValid}
-                                    errorText="Please enter a valid latitude."
-                                    validators={[VALIDATOR_COORDINATE()]}
+                                    errorText="Please enter a valid latitude on the range 39.0 to 42."
+                                    validators={[VALIDATOR_LATITUDE()]}
                                     onInput={inputHandler}
                                 />
                                 <FormInput
@@ -136,8 +129,8 @@ export default function AddPlace() {
                                     label={"Longitude"}
                                     inputElementType={SIMPLE_INPUT_TYPE}
                                     isValid={formState?.inputs?.LONGITUDE_FIELD_ID?.isValid}
-                                    errorText="Please enter a valid longitude."
-                                    validators={[VALIDATOR_COORDINATE()]}
+                                    errorText="Please enter a valid longitude on the range 19.0 to 21."
+                                    validators={[VALIDATOR_LONGITUDE()]}
                                     onInput={inputHandler}
                                 />
                             </div>

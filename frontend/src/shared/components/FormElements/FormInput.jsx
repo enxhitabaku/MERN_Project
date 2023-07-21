@@ -41,10 +41,10 @@ export default function FormInput({
         })
     }
 
-    function changeFileHandler(files) {
+    function changeFileHandler(file) {
         dispatch({
             type: 'CHANGE',
-            val: files,
+            val: file,
             validators: validators,
         })
     }

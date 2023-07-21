@@ -1,37 +1,11 @@
+require('dotenv').config()
 const {validationResult} = require('express-validator');
-
 const HttpError = require("../models/http-error");
 const {
-    createNewPlace,
     createNewPlaceOnDatabase,
     retrievePlaceByIdFromDatabase, retrievePlaceByUserIdFromDatabase, updateExistingPlaceOnDatabase,
     deleteExistingPlaceFromDatabase
 } = require("../database/services/place-service");
-
-let DummyPlaceList = [
-    {
-        id: '1',
-        title: 'Berat View',
-        description: 'Nice view.',
-        address: 'Berat',
-        location: {
-            latitude: 41,
-            longitude: 20,
-        },
-        creatorId: '1',
-    },
-    {
-        id: '2',
-        title: 'Saranda View',
-        description: 'Nice dinner.',
-        address: 'Saranda',
-        location: {
-            latitude: 30,
-            longitude: 10,
-        },
-        creatorId: '1',
-    },
-]
 
 async function getPlaceById(req, res, next) {
     const placeId = req.params.pid
@@ -56,19 +30,20 @@ async function getPlacesByUserId(req, res, next) {
     res.status(200).json(placesListResponse.result);
 }
 
-const DUMMY_IMAGE_SRC = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg'
-
 async function createPlace(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log(errors.mapped())
         return next(
             new HttpError('Invalid inputs passed, please check your data.', 422)
         )
     }
 
-    const {title, description, location, creatorId} = req.body;
+    const {title, description, latitude, longitude, creatorId} = req.body;
+    const location = {latitude, longitude}
+    const filePath = req.file.path.replace(/\\/g, "/");
 
-    const createNewPlaceResponse = await createNewPlaceOnDatabase(title, description, location, DUMMY_IMAGE_SRC, creatorId);
+    const createNewPlaceResponse = await createNewPlaceOnDatabase(filePath, title, description, location, creatorId);
     if (!createNewPlaceResponse.success) {
         const httpError = new HttpError(createNewPlaceResponse.message, createNewPlaceResponse.httpStatusCode);
         return next(httpError);

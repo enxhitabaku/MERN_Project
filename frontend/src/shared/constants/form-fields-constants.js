@@ -17,3 +17,6 @@ export const RADIO_VALID_VALUES = {
     "F": {value: "female", label: "Female"},
     "M": {value: "male", label: "Male"}
 }
+
+export const FILE_WHITE_LIST = ['image/jpg', 'image/jpeg', 'image/png']
+export const FILE_MAX_SIZE = 256000 //256KB

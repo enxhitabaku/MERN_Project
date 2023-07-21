@@ -8,6 +8,7 @@ li.place-list-item {
 .place-list-item-image,
 .place-card-action-buttons-container {
     cursor: default;
+    max-width: 250px;
 }
 
 /* Place List Style */
@@ -38,6 +39,10 @@ li.place-list-item {
 #new-place-section .MuiPaper-root,
 #edit-place-section .MuiPaper-root {
     padding: 15px 10px;
+}
+
+#new-place-section #new-place-form {
+    width: 750px;
 }
 
 #coordinates-fields-container {
