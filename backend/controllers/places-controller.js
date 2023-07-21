@@ -16,7 +16,7 @@ async function getPlaceById(req, res, next) {
         return next(httpError);
     }
 
-    res.status(placeResponse.httpStatusCode).json({place: placeResponse.result});
+    res.status(placeResponse.httpStatusCode).json(placeResponse.result);
 }
 
 async function getPlacesByUserId(req, res, next) {

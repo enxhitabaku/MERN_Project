@@ -4,6 +4,18 @@ const bcrypt = require('bcrypt');
 const ServiceResponse = require("../../shared/service-response");
 const {createJWT, mapToPartialUserData} = require("../../services/security-service");
 
+async function retrieveAllUsersFromDatabase() {
+    try {
+        //On users retrival the password field will be omitted for security reasons
+        const users = await User.find({}, '-password');
+
+        const usersWithGetters = users.map(user => user.toObject({getters: true}));
+        return ServiceResponse.success({users: usersWithGetters}, 200)
+    } catch (err) {
+        return ServiceResponse.error('Fetching users failed, please try again later.', 500);
+    }
+}
+
 async function createNewUserOnDatabase(gender, email, password) {
     try {
         const existingUser = await User.findOne({email: email})
@@ -25,7 +37,7 @@ async function createNewUserOnDatabase(gender, email, password) {
         const jwtToken = createJWT(userObject.id, userObject.email);
         const partialUserData = mapToPartialUserData(userObject, jwtToken);
 
-        return ServiceResponse.success(partialUserData, 201);
+        return ServiceResponse.success({user: partialUserData}, 201);
     } catch (err) {
         return ServiceResponse.error('Signing up failed, please try again later.', 500);
     }
@@ -43,21 +55,9 @@ async function authenticateUser(email, password) {
         const jwtToken = createJWT(userObject.id, userObject.email);
         const partialUserData = mapToPartialUserData(userObject, jwtToken);
 
-        return ServiceResponse.success(partialUserData, 200);
+        return ServiceResponse.success({user: partialUserData}, 200);
     } catch (err) {
         return ServiceResponse.error('Logging in failed, please try again later.', 500);
-    }
-}
-
-async function retrieveAllUsersFromDatabase() {
-    try {
-        //On users retrival the password field will be omitted for security reasons
-        const users = await User.find({}, '-password');
-
-        const usersWithGetters = users.map(user => user.toObject({getters: true}));
-        return ServiceResponse.success({users: usersWithGetters}, 200)
-    } catch (err) {
-        return ServiceResponse.error('Fetching users failed, please try again later.', 500);
     }
 }
 

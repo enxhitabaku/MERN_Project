@@ -41,7 +41,7 @@ export default function LogIn() {
         event.preventDefault()
         if (formState.isValid) {
             try {
-                /**@type{User}*/
+                /**@type{{user: User}}*/
                 const responseData = await sendRequest(LOG_IN_ENDPOINT, 'POST',
                     JSON.stringify({
                         email: formState.inputs.EMAIL_FIELD_ID.value,
@@ -52,7 +52,7 @@ export default function LogIn() {
                     }
                 );
 
-                doAuthenticate(responseData);
+                doAuthenticate(responseData.user);
             } catch (err) {
                 console.error(err);
             }

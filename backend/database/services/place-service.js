@@ -2,6 +2,7 @@ const Place = require("../models/place");
 const User = require("../models/user");
 const ServiceResponse = require("../../shared/service-response");
 const mongoose = require("mongoose");
+const fs = require("fs");
 
 async function retrievePlaceByIdFromDatabase(placeId) {
     try {
@@ -9,7 +10,7 @@ async function retrievePlaceByIdFromDatabase(placeId) {
         if (!place) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
         }
-        return ServiceResponse.success(place.toObject({getters: true}), 200);
+        return ServiceResponse.success({place: place.toObject({getters: true})}, 200);
     } catch (err) {
         return ServiceResponse.error('Something went wrong, could not find a place record.', 500);
     }
@@ -55,7 +56,7 @@ async function createNewPlaceOnDatabase(image, title, description, location, cre
 
         await createPlaceSession.commitTransaction();
 
-        return ServiceResponse.success(createdPlace, 201);
+        return ServiceResponse.success({place: createdPlace}, 201);
     } catch (err) {
         return ServiceResponse.error('Creating place failed, please try again.', 500);
     }
@@ -86,6 +87,8 @@ async function deleteExistingPlaceFromDatabase(placeId) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
         }
 
+        const placeImage = place.image;
+
         //Started a session to run tasks sequentially. i.e the place deletion and unlink it from the creator based on his id
         const deleteSession = await mongoose.startSession();
         deleteSession.startTransaction();
@@ -96,6 +99,10 @@ async function deleteExistingPlaceFromDatabase(placeId) {
 
         await deleteSession.commitTransaction();
 
+        //Remove the image on place delete.
+        fs.unlink(placeImage, (err) => {
+            console.log(err)
+        });
         return ServiceResponse.success({message: "Place Deleted Successfully!"}, 204);
     } catch (err) {
         return ServiceResponse.error('Something went wrong, could not delete place.', 500);

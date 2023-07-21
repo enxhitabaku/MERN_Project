@@ -18,6 +18,7 @@ async function getUsers(req, res, next) {
 async function signup(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log(errors.mapped())
         return next(
             new HttpError('Invalid inputs passed, please check your data.', 422)
         )
