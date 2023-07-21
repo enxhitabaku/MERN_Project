@@ -10,3 +10,8 @@
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+.idea
+/node_modules
+package-lock.json
+

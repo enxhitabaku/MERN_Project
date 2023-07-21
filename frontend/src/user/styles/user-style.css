@@ -1,0 +1,40 @@
+/* Uset Item Style */
+li.user-list-item {
+    list-style-type: none;
+    margin-bottom: 20px;
+    width: 450px;
+}
+
+li.user-list-item .MuiCard-root:hover {
+    background-color: #61e8e1;
+    cursor: pointer;
+}
+
+.card-content {
+    display: inline-flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.email-container {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+
+.place-count-container {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Uset List Style */
+#users-list-section, #log-in-section, #sign-up-section {
+    display: flex;
+    justify-content: center;
+    margin: 25px 15px;
+}
+
+.auth-form-action-buttons-container {
+    display: flex;
+    justify-content: center;
+}

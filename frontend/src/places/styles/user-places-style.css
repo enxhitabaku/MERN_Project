@@ -1,0 +1,72 @@
+/* Place Item Style */
+li.place-list-item {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
+
+.place-list-item-image {
+    margin: auto;
+    padding: 10px;
+}
+
+.place-list-item-content,
+.place-list-item-image,
+.place-card-action-buttons-container {
+    cursor: default;
+    max-width: 250px;
+}
+
+/* Place List Style */
+#place-list-section {
+    display: flex;
+    justify-content: center;
+    margin: 25px 15px;
+}
+
+.place-card-action-buttons-container.MuiCardActions-root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.important-action-buttons-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* New Place Style and Edit Place Style */
+#new-place-section,
+#edit-place-section {
+    display: flex;
+    justify-content: center;
+    margin: 25px 15px;
+}
+
+#new-place-section .MuiPaper-root,
+#edit-place-section .MuiPaper-root {
+    padding: 15px 10px;
+}
+
+#new-place-section #new-place-form {
+    width: 750px;
+}
+
+#coordinates-fields-container {
+    display: flex;
+    flex-flow: row;
+    gap: 10px;
+}
+
+#form-container {
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+}
+
+#form-action-buttons-container {
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#edit-place-form {
+    width: 65%;
+}
