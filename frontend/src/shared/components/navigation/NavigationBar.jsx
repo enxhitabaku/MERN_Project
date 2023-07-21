@@ -55,7 +55,7 @@ export default function NavigationBar() {
 
             fetchUser();
         }
-    }, [sendRequest, isAuthenticated]);
+    }, [sendRequest, isAuthenticated, userId]);
 
     const [anchorElNav, setAnchorElNav] = useState(null)
     const [anchorElUser, setAnchorElUser] = useState(null)

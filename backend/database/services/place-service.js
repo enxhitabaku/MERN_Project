@@ -62,12 +62,16 @@ async function createNewPlaceOnDatabase(image, title, description, location, cre
     }
 }
 
-async function updateExistingPlaceOnDatabase(placeId, title, description) {
+async function updateExistingPlaceOnDatabase(userId, placeId, title, description) {
 
     try {
         const place = await Place.findById(placeId);
         if (!place) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
+        }
+
+        if (place.creatorId.toString() !== userId.toString()) {
+            return ServiceResponse.error('You are not authorized to edit this place.', 401);
         }
 
         place.title = title;
@@ -76,15 +80,20 @@ async function updateExistingPlaceOnDatabase(placeId, title, description) {
         await place.save();
         return ServiceResponse.success({place: place.toObject({getters: true})}, 200);
     } catch (err) {
+        console.error(err);
         return ServiceResponse.error('Something went wrong, could not update place.', 500);
     }
 }
 
-async function deleteExistingPlaceFromDatabase(placeId) {
+async function deleteExistingPlaceFromDatabase(placeId, userId) {
     try {
         const place = await Place.findById(placeId).populate('creatorId');
         if (!place) {
             return ServiceResponse.error('Could not find a place for the provided id.', 404);
+        }
+
+        if (place.creatorId.toString() !== userId.toString()) {
+            return ServiceResponse.error('You are not authorized to delete this place.', 401);
         }
 
         const placeImage = place.image;

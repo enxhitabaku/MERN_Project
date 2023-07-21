@@ -32,7 +32,7 @@ const INITIAL_INPUT_VALUES = {
 }
 
 export default function EditPlace() {
-    const {userId} = useContext(AuthenticationContext);
+    const {userId, token} = useContext(AuthenticationContext);
     const {isLoading, error, sendRequest} = useHttpClient();
     const [loadedPlace, setLoadedPlace] = useState();
     const history = useHistory();
@@ -74,7 +74,8 @@ export default function EditPlace() {
                     description: formState.inputs.DESCRIPTION_FIELD_ID.value
                 }),
                 {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + token
                 }
             );
             history.push(`${userId}/places`);

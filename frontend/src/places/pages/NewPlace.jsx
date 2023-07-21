@@ -47,7 +47,7 @@ const INITIAL_FORM_SET_UP = {
     }
 }
 export default function AddPlace() {
-    const {userId} = useContext(AuthenticationContext);
+    const {userId, token} = useContext(AuthenticationContext);
     const history = useHistory()
     const {isLoading, error, sendRequest} = useHttpClient();
     const [formState, inputHandler] = useForm(INITIAL_FORM_SET_UP, false);
@@ -62,8 +62,10 @@ export default function AddPlace() {
                 formData.append('description', formState.inputs.DESCRIPTION_FIELD_ID.value);
                 formData.append('latitude', formState.inputs.LATITUDE_FIELD_ID.value);
                 formData.append('longitude', formState.inputs.LONGITUDE_FIELD_ID.value);
-                formData.append('creatorId', userId);
-                await sendRequest(ADD_PLACES_ENDPOINT, 'POST', formData);
+                await sendRequest(ADD_PLACES_ENDPOINT, 'POST', formData,
+                    {
+                        Authorization: "Bearer " + token
+                    });
                 history.push(`${userId}/places`);
             } catch (err) {
                 console.log(err);

@@ -97,7 +97,6 @@ export function AuthorizationLinks({onClick}) {
                 <Link key={auth.label} to={auth.urlPath}>
                     <Button
                         variant="outlined"
-                        key={auth.label}
                         onClick={onClick}
                     >
                         {auth.label}

@@ -46,8 +46,9 @@ async function createNewUserOnDatabase(gender, email, password) {
 
         await createdUser.save();
 
+        const jwtToken = createJWT(createdUser.id);
+
         const userObject = createdUser.toObject({getters: true});
-        const jwtToken = createJWT(userObject.id, userObject.email);
         const partialUserData = mapToPartialUserData(userObject, jwtToken);
 
         return ServiceResponse.success({user: partialUserData}, 201);
@@ -57,15 +58,21 @@ async function createNewUserOnDatabase(gender, email, password) {
 }
 
 async function authenticateUser(email, password) {
+
     try {
         const existingUser = await User.findOne({email: email})
-        const isValidPassword = await bcrypt.compare(password, existingUser.password);
-        if (!existingUser || !isValidPassword) {
-            return ServiceResponse.error('Invalid credentials, could not log you in.', 401);
+        if (!existingUser) {
+            return ServiceResponse.error('Invalid credentials, could not log you in.', 403);
         }
 
+        const isValidPassword = await bcrypt.compare(password, existingUser.password);
+        if (!isValidPassword) {
+            return ServiceResponse.error('Invalid credentials, could not log you in.', 403);
+        }
+
+        const jwtToken = createJWT(existingUser.id);
+
         const userObject = existingUser.toObject({getters: true});
-        const jwtToken = createJWT(userObject.id, userObject.email);
         const partialUserData = mapToPartialUserData(userObject, jwtToken);
 
         return ServiceResponse.success({user: partialUserData}, 200);

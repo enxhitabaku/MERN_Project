@@ -1,36 +1,28 @@
-import {createContext, useState} from "react";
+import {createContext} from "react";
+import {useAuthentication} from "../hooks/authentication-hook";
 
 export const AuthenticationContext = createContext({
     doAuthenticate: () => {
     },
     onLogOut: () => {
     },
+    /**@type{string | null}*/
+    token: null,
     /**@type{boolean}*/
     isAuthenticated: false,
-    /**@type{string}*/
+    /**@type{string | null}*/
     userId: ""
 });
 
 export function AuthenticationContextProvider(props) {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userId, setUserId] = useState("");
-
-    /**@param{string} userId*/
-    function authenticate(userId) {
-        setUserId(userId);
-        setIsAuthenticated(true);
-    }
-
-    function onLogOut() {
-        setUserId("");
-        setIsAuthenticated(false);
-    }
+    const {token, authenticate, logout, userId} = useAuthentication();
 
     return (
         <AuthenticationContext.Provider value={{
             doAuthenticate: authenticate,
-            onLogOut,
-            isAuthenticated,
+            onLogOut: logout,
+            token,
+            isAuthenticated: !!token,
             userId
         }}>
             {props.children}

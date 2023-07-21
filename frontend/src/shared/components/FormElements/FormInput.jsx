@@ -110,7 +110,6 @@ export default function FormInput({
                         id={id}
                         required={isRequired ?? false}
                         defaultValue={defaultValue ?? ""}
-                        error={hasError}
                         onChange={changeHandler}
                         onBlur={touchHandler}
                         row

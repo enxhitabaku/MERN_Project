@@ -13,12 +13,12 @@ import {
 } from "../../shared/constants/form-fields-constants";
 import Box from "@mui/material/Box";
 import {Button, CardActions} from "@mui/material";
-import {useContext} from "react";
-import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
 import {SIGN_UP_ENDPOINT} from "../../shared/constants/endpoint-constants";
 import {useHttpClient} from "../../shared/hooks/http-client-hook";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
+import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
+import {useContext} from "react";
 
 const INITIAL_INPUT_DATA = {
     RADIO_BUTTON_FIELD_ID: {
@@ -45,7 +45,7 @@ export default function SignUp() {
         if (formState.isValid) {
             try {
                 /**@type{{user: User}}*/
-                const responseData = await sendRequest(SIGN_UP_ENDPOINT, 'POST',
+                const response = await sendRequest(SIGN_UP_ENDPOINT, 'POST',
                     JSON.stringify({
                         gender: formState.inputs.RADIO_BUTTON_FIELD_ID.value,
                         email: formState.inputs.EMAIL_FIELD_ID.value,
@@ -55,7 +55,7 @@ export default function SignUp() {
                         'Content-Type': 'application/json'
                     }
                 );
-                doAuthenticate(responseData.user.id);
+                doAuthenticate(response.user.id, response.user.token);
             } catch (err) {
                 console.log(err);
             }

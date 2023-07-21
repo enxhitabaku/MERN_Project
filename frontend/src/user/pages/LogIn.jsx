@@ -15,11 +15,11 @@ import {
 import {LOG_IN_ENDPOINT} from "../../shared/constants/endpoint-constants"
 import Box from "@mui/material/Box";
 import {Button, CardActions} from "@mui/material";
-import {useContext} from "react";
-import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
 import {useHttpClient} from "../../shared/hooks/http-client-hook";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
+import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
+import {useContext} from "react";
 
 const INITIAL_INPUT_DATA = {
     EMAIL_FIELD_ID: {
@@ -42,7 +42,7 @@ export default function LogIn() {
         if (formState.isValid) {
             try {
                 /**@type{{user: User}}*/
-                const responseData = await sendRequest(LOG_IN_ENDPOINT, 'POST',
+                const response = await sendRequest(LOG_IN_ENDPOINT, 'POST',
                     JSON.stringify({
                         email: formState.inputs.EMAIL_FIELD_ID.value,
                         password: formState.inputs.PASSWORD_FIELD_ID.value
@@ -51,8 +51,7 @@ export default function LogIn() {
                         'Content-Type': 'application/json'
                     }
                 );
-
-                doAuthenticate(responseData.user.id);
+                doAuthenticate(response.user.id, response.user.token);
             } catch (err) {
                 console.error(err);
             }
