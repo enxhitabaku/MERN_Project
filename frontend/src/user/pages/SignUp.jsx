@@ -113,7 +113,8 @@ export default function SignUp() {
                     {isLoading &&
                         <div style={{display: "flex", justifyContent: "center"}}><CircularProgress/></div>}
                     {error && !isLoading &&
-                        <Alert severity="error">Sign up failed. Please check your data and try again.</Alert>}
+                        <Alert severity="error">Sign up failed. Please check your data and try again. Maybe you already
+                            have an account ?!</Alert>}
 
                 </Card>
             </form>

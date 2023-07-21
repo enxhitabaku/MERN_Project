@@ -25,13 +25,11 @@ export function validate(value, validators) {
         if (validator.type === VALIDATOR_TYPE_LATITUDE) {
             //Allowed float range: 39 to 42
             const rgx = new RegExp(/^((?:39|4[0-2])(?:\.\d+)?)$/)
-            console.log(rgx.test(value));
             isValid = isValid && rgx.test(value);
         }
         if (validator.type === VALIDATOR_TYPE_LONGITUDE) {
             //Allowed float range: 19 to 21
             const rgx = new RegExp(/^(?:19|2[0-1])(?:\.\d+)?$/)
-            console.log(rgx.test(value));
             isValid = isValid && rgx.test(value);
         }
         if (validator.type === VALIDATOR_TYPE_FILE) {

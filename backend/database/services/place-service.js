@@ -39,7 +39,6 @@ async function createNewPlaceOnDatabase(image, title, description, location, cre
         location,
         creatorId
     });
-
     try {
         const user = await User.findById(creatorId);
         if (!user) {

@@ -1,7 +1,8 @@
-const User = require('../models/user')
+require('dotenv').config();
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const ServiceResponse = require("../../shared/service-response");
-
-const DUMMY_IMAGE_SRC = 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg';
+const {createJWT, mapToPartialUserData} = require("../../services/security-service");
 
 async function createNewUserOnDatabase(gender, email, password) {
     try {
@@ -10,16 +11,21 @@ async function createNewUserOnDatabase(gender, email, password) {
             return ServiceResponse.error('User exists already, please login instead.', 422);
         }
 
+        const hashedPassword = await bcrypt.hash(password, 12);
         const createdUser = new User({
             gender,
             email,
-            image: DUMMY_IMAGE_SRC,
-            password,
+            password: hashedPassword,
             places: []
         });
 
         await createdUser.save();
-        return ServiceResponse.success({user: createdUser.toObject({getters: true})}, 201)
+
+        const userObject = createdUser.toObject({getters: true});
+        const jwtToken = createJWT(userObject.id, userObject.email);
+        const partialUserData = mapToPartialUserData(userObject, jwtToken);
+
+        return ServiceResponse.success(partialUserData, 201);
     } catch (err) {
         return ServiceResponse.error('Signing up failed, please try again later.', 500);
     }
@@ -28,17 +34,15 @@ async function createNewUserOnDatabase(gender, email, password) {
 async function authenticateUser(email, password) {
     try {
         const existingUser = await User.findOne({email: email})
-        if (!existingUser || existingUser.password !== password) {
+        const isValidPassword = await bcrypt.compare(password, existingUser.password);
+        if (!existingUser || !isValidPassword) {
             return ServiceResponse.error('Invalid credentials, could not log you in.', 401);
         }
 
         const userObject = existingUser.toObject({getters: true});
-        const partialUserData = {
-            id: userObject.id,
-            email: userObject.email,
-            gender: userObject.gender,
-            places: userObject.places
-        }
+        const jwtToken = createJWT(userObject.id, userObject.email);
+        const partialUserData = mapToPartialUserData(userObject, jwtToken);
+
         return ServiceResponse.success(partialUserData, 200);
     } catch (err) {
         return ServiceResponse.error('Logging in failed, please try again later.', 500);
