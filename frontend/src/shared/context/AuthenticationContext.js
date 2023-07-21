@@ -1,29 +1,46 @@
 import {createContext, useState} from "react";
 
+/**@type{User}*/
+const INITIAL_USER_ENTITY = {
+    id: "",
+    email: "",
+    gender: "",
+    /**@type{Place[]}*/
+    places: []
+}
+
 export const AuthenticationContext = createContext({
-    onLogIn: () => {
+    doAuthenticate: () => {
     },
     onLogOut: () => {
     },
-    isAuthenticated: false
+    /**@type{boolean}*/
+    isAuthenticated: false,
+    /**@type{User}*/
+    user: INITIAL_USER_ENTITY
 });
 
 export function AuthenticationContextProvider(props) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(undefined);
 
-    function onLogIn() {
+    /**@param{User} user*/
+    function authenticate(user) {
+        setUser(user);
         setIsAuthenticated(true);
     }
 
     function onLogOut() {
+        setUser(INITIAL_USER_ENTITY);
         setIsAuthenticated(false);
     }
 
     return (
         <AuthenticationContext.Provider value={{
-            onLogIn,
+            doAuthenticate: authenticate,
             onLogOut,
-            isAuthenticated
+            isAuthenticated,
+            user
         }}>
             {props.children}
         </AuthenticationContext.Provider>

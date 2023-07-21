@@ -13,28 +13,53 @@ import {
 } from "../../shared/constants/form-fields-constants";
 import Box from "@mui/material/Box";
 import {Button, CardActions} from "@mui/material";
+import {useContext} from "react";
+import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
+import {SIGN_UP_ENDPOINT} from "../../shared/constants/endpoint-constants";
+import {useHttpClient} from "../../shared/hooks/http-client-hook";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
+
+const INITIAL_INPUT_DATA = {
+    RADIO_BUTTON_FIELD_ID: {
+        value: "",
+        isValid: false
+    },
+    EMAIL_FIELD_ID: {
+        value: "",
+        isValid: false
+    },
+    PASSWORD_FIELD_ID: {
+        value: "",
+        isValid: false
+    }
+}
 
 export default function SignUp() {
-    const [formState, inputHandler] = useForm(
-        {
-            RADIO_BUTTON_FIELD_ID: {
-                value: "",
-                isValid: false
-            },
-            EMAIL_FIELD_ID: {
-                value: "",
-                isValid: false
-            },
-            PASSWORD_FIELD_ID: {
-                value: "",
-                isValid: false
-            }
-        }, false
-    )
+    const {doAuthenticate} = useContext(AuthenticationContext);
+    const {isLoading, error, sendRequest} = useHttpClient();
+    const [formState, inputHandler] = useForm(INITIAL_INPUT_DATA, false)
 
-    function signUpHandler(event) {
+    async function signUpHandler(event) {
         event.preventDefault()
-        console.log(formState.inputs)
+        if (formState.isValid) {
+            try {
+                /**@type{User}*/
+                const responseData = await sendRequest(SIGN_UP_ENDPOINT, 'POST',
+                    JSON.stringify({
+                        gender: formState.inputs.RADIO_BUTTON_FIELD_ID.value,
+                        email: formState.inputs.EMAIL_FIELD_ID.value,
+                        password: formState.inputs.PASSWORD_FIELD_ID.value
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
+                );
+                doAuthenticate(responseData);
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 
     return (
@@ -79,12 +104,17 @@ export default function SignUp() {
                             type="submit"
                             size="small"
                             variant="contained"
-                            disabled={!formState.isValid}
+                            disabled={!formState.isValid && !isLoading}
                             onClick={signUpHandler}
                         >
                             Sign Up
                         </Button>
                     </CardActions>
+                    {isLoading &&
+                        <div style={{display: "flex", justifyContent: "center"}}><CircularProgress/></div>}
+                    {error && !isLoading &&
+                        <Alert severity="error">Sign up failed. Please check your data and try again.</Alert>}
+
                 </Card>
             </form>
         </section>

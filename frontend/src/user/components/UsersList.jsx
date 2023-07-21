@@ -5,11 +5,11 @@ import UserItem from './UserItem'
 /**
  * React functional component to render a list of users.
  * @component
- * @param {{users: User[]}} users
+ * @param {users: User[]} users
  * @returns {JSX.Element}
  */
-export default function UsersList({ users }) {
-    if (users?.length === 0) {
+export default function UsersList({users}) {
+    if (!users || users?.length === 0) {
         return (
             <section id="users-list-section">
                 <Alert severity="info">
@@ -24,7 +24,7 @@ export default function UsersList({ users }) {
         <section id="users-list-section">
             <ul>
                 {users.map((user) => {
-                    return <UserItem key={user.id} user={user} />
+                    return <UserItem key={user.id} user={user}/>
                 })}
             </ul>
         </section>

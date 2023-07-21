@@ -6,12 +6,12 @@ import '../styles/user-style.css'
 /**
  * React functional component to render a user entity within a Card.
  * @component
- * @param {{user: User}} user
+ * @param {user: User} user
  * @returns {JSX.Element}
  * */
 export default function UserItem({user}) {
     function generatePlaceCountLabel() {
-        return user.placeCount === 1 ? 'Place' : 'Places'
+        return user.places.length === 1 ? 'Place' : 'Places'
     }
 
     return (
@@ -20,16 +20,15 @@ export default function UserItem({user}) {
                 <Link to={`/${user.id}/places`}>
                     <CardContent className="card-content">
                         <Avatar
-                            alt={`Avatar Icon of user ${user.fullName}`}
-                            src={user.imageSrc}
+                            alt={`Avatar Icon of user ${user.email}`}
                             size="lg"
                         />
                         <div>
-                            <h1 className="full-name-container">
-                                {user.fullName}
+                            <h1 className="email-container">
+                                {user.email}
                             </h1>
                             <h2 className="place-count-container">
-                                <strong>{user.placeCount}</strong>
+                                <strong>{user.places.length}</strong>
                                 &nbsp;
                                 {generatePlaceCountLabel()}
                             </h2>

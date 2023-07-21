@@ -32,7 +32,14 @@ async function authenticateUser(email, password) {
             return ServiceResponse.error('Invalid credentials, could not log you in.', 401);
         }
 
-        return ServiceResponse.success({message: "Logged In"}, 200);
+        const userObject = existingUser.toObject({getters: true});
+        const partialUserData = {
+            id: userObject.id,
+            email: userObject.email,
+            gender: userObject.gender,
+            places: userObject.places
+        }
+        return ServiceResponse.success(partialUserData, 200);
     } catch (err) {
         return ServiceResponse.error('Logging in failed, please try again later.', 500);
     }

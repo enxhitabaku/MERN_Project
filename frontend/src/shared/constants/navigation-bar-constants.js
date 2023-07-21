@@ -7,13 +7,9 @@ export const navLinksList = [
         label: 'Feed',
     },
     {
-        urlPath: '/my-places',
-        label: 'My Places',
-    },
-    {
         urlPath: '/add-place',
         label: 'Add Place',
-    },
+    }
 ]
 
 /**
