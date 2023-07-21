@@ -20,7 +20,7 @@ import CircularProgress from "@mui/material/CircularProgress";
  * @returns {JSX.Element}
  * */
 export default function PlaceItem({place, onDelete}) {
-    const {isAuthenticated, user} = useContext(AuthenticationContext);
+    const {isAuthenticated, userId, token} = useContext(AuthenticationContext);
     const {isLoading, error, sendRequest} = useHttpClient();
 
     function handleOnOpenGoogleMapClick() {
@@ -33,7 +33,9 @@ export default function PlaceItem({place, onDelete}) {
     async function handleOnDelete() {
         if (window.confirm("Are you sure to delete this place ?")) {
             try {
-                await sendRequest(MODIFY_PLACE_ENDPOINT(place.id), 'DELETE');
+                await sendRequest(MODIFY_PLACE_ENDPOINT(place.id), 'DELETE', null, {
+                    Authorization: "Bearer " + token
+                });
                 onDelete(place.id);
             } catch (err) {
                 console.log(err)
@@ -67,7 +69,7 @@ export default function PlaceItem({place, onDelete}) {
                     >
                         Open on Google Map
                     </Button>
-                    {(isAuthenticated && user.id === place.creatorId) &&
+                    {(isAuthenticated && userId === place.creatorId) &&
                         <div className="important-action-buttons-container">
                             <Link to={`/place/${place.id}`} exact={'true'}>
                                 <Button

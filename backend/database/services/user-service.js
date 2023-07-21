@@ -1,47 +1,19 @@
-const User = require('../models/user')
+require('dotenv').config();
+const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const ServiceResponse = require("../../shared/service-response");
+const {createJWT, mapToPartialUserData} = require("../../shared/utils");
 
-const DUMMY_IMAGE_SRC = 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg';
-
-async function createNewUserOnDatabase(gender, email, password) {
+async function retrieveUserFromDatabase(userId) {
     try {
-        const existingUser = await User.findOne({email: email})
-        if (existingUser) {
-            return ServiceResponse.error('User exists already, please login instead.', 422);
+        //On user retrival the password field will be omitted for security reasons
+        const user = await User.findOne({id: userId}, '-password');
+        if (!user) {
+            return ServiceResponse.error(`Unable to find user with id ${userId}`, 404);
         }
-
-        const createdUser = new User({
-            gender,
-            email,
-            image: DUMMY_IMAGE_SRC,
-            password,
-            places: []
-        });
-
-        await createdUser.save();
-        return ServiceResponse.success({user: createdUser.toObject({getters: true})}, 201)
+        return ServiceResponse.success({user: user}, 200)
     } catch (err) {
-        return ServiceResponse.error('Signing up failed, please try again later.', 500);
-    }
-}
-
-async function authenticateUser(email, password) {
-    try {
-        const existingUser = await User.findOne({email: email})
-        if (!existingUser || existingUser.password !== password) {
-            return ServiceResponse.error('Invalid credentials, could not log you in.', 401);
-        }
-
-        const userObject = existingUser.toObject({getters: true});
-        const partialUserData = {
-            id: userObject.id,
-            email: userObject.email,
-            gender: userObject.gender,
-            places: userObject.places
-        }
-        return ServiceResponse.success(partialUserData, 200);
-    } catch (err) {
-        return ServiceResponse.error('Logging in failed, please try again later.', 500);
+        return ServiceResponse.error('Fetching user failed, please try again later.', 500);
     }
 }
 
@@ -57,7 +29,60 @@ async function retrieveAllUsersFromDatabase() {
     }
 }
 
+async function createNewUserOnDatabase(gender, email, password) {
+    try {
+        const existingUser = await User.findOne({email: email})
+        if (existingUser) {
+            return ServiceResponse.error('User exists already, please login instead.', 422);
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const createdUser = new User({
+            gender,
+            email,
+            password: hashedPassword,
+            places: []
+        });
+
+        await createdUser.save();
+
+        const jwtToken = createJWT(createdUser.id);
+
+        const userObject = createdUser.toObject({getters: true});
+        const partialUserData = mapToPartialUserData(userObject, jwtToken);
+
+        return ServiceResponse.success({user: partialUserData}, 201);
+    } catch (err) {
+        return ServiceResponse.error('Signing up failed, please try again later.', 500);
+    }
+}
+
+async function authenticateUser(email, password) {
+
+    try {
+        const existingUser = await User.findOne({email: email})
+        if (!existingUser) {
+            return ServiceResponse.error('Invalid credentials, could not log you in.', 403);
+        }
+
+        const isValidPassword = await bcrypt.compare(password, existingUser.password);
+        if (!isValidPassword) {
+            return ServiceResponse.error('Invalid credentials, could not log you in.', 403);
+        }
+
+        const jwtToken = createJWT(existingUser.id);
+
+        const userObject = existingUser.toObject({getters: true});
+        const partialUserData = mapToPartialUserData(userObject, jwtToken);
+
+        return ServiceResponse.success({user: partialUserData}, 200);
+    } catch (err) {
+        return ServiceResponse.error('Logging in failed, please try again later.', 500);
+    }
+}
+
 module.exports = {
+    retrieveUserFromDatabase,
     createNewUserOnDatabase,
     authenticateUser,
     retrieveAllUsersFromDatabase

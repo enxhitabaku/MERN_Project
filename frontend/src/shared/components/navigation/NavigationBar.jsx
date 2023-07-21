@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react'
+import {useContext, useState, useEffect} from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -20,6 +20,15 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import MaleAvatar from "../../../static/images/avatar/avatar-boy.png";
 import FemaleAvatar from "../../../static/images/avatar/avatar-girl.png";
+import {useHttpClient} from "../../hooks/http-client-hook";
+import {USER_ENDPOINT} from "../../constants/endpoint-constants";
+
+const INITAL_USER = {
+    id: "",
+    email: "",
+    gender: "",
+    places: []
+}
 
 /**
  * Functional Component to render the Navigation Bar
@@ -27,7 +36,26 @@ import FemaleAvatar from "../../../static/images/avatar/avatar-girl.png";
  * @returns {JSX.Element}
  **/
 export default function NavigationBar() {
-    const {isAuthenticated, user, onLogOut} = useContext(AuthenticationContext);
+    const {isAuthenticated, userId, onLogOut} = useContext(AuthenticationContext);
+    const {isLoading, error, sendRequest} = useHttpClient();
+    const [user, setUser] = useState(INITAL_USER);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            async function fetchUser() {
+                try {
+                    const responseData = await sendRequest(USER_ENDPOINT, "POST", {
+                        userId: userId
+                    });
+                    setUser(responseData.user);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            fetchUser();
+        }
+    }, [sendRequest, isAuthenticated, userId]);
 
     const [anchorElNav, setAnchorElNav] = useState(null)
     const [anchorElUser, setAnchorElUser] = useState(null)
@@ -116,8 +144,8 @@ export default function NavigationBar() {
                                             sx={{p: 0}}
                                         >
                                             <Avatar
-                                                alt={user.email}
-                                                src={user.gender === "male" ? MaleAvatar : FemaleAvatar}
+                                                alt={(isLoading || error) ? "" : user?.email}
+                                                src={(isLoading || error) ? "" : user?.gender === "male" ? MaleAvatar : FemaleAvatar}
                                             />
                                         </IconButton>
                                     </Tooltip>

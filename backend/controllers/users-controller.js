@@ -1,10 +1,21 @@
 const {validationResult} = require('express-validator');
 const HttpError = require('../models/http-error');
 const {
+    retrieveUserFromDatabase,
     createNewUserOnDatabase,
     authenticateUser,
     retrieveAllUsersFromDatabase
 } = require("../database/services/user-service");
+
+async function getUserById(req, res, next) {
+    const {userId} = req.body;
+    const useResponse = await retrieveUserFromDatabase(userId);
+    if (!useResponse.success) {
+        const httpError = new HttpError(useResponse.message, useResponse.httpStatusCode);
+        return next(httpError);
+    }
+    res.status(useResponse.httpStatusCode).json(useResponse.result);
+}
 
 async function getUsers(req, res, next) {
     const allUsersResponse = await retrieveAllUsersFromDatabase();
@@ -18,6 +29,7 @@ async function getUsers(req, res, next) {
 async function signup(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log(errors.mapped())
         return next(
             new HttpError('Invalid inputs passed, please check your data.', 422)
         )
@@ -48,6 +60,7 @@ async function login(req, res, next) {
 }
 
 module.exports = {
+    getUserById: getUserById,
     getUsers: getUsers,
     signup: signup,
     login: login

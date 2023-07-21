@@ -5,7 +5,9 @@ function validatePlaceParamsOnCreate() {
         check('title')
             .not()
             .isEmpty(),
-        check('description').isLength({min: 1}),
+        check('description')
+            .not()
+            .isEmpty(),
         check('latitude')
             .isString()
             .matches(/^(?:39|4[0-2])(?:\.\d+)?$/),
@@ -32,8 +34,8 @@ function validateUserParamsOnSignUp() {
             .isString()
             .isIn(["male", "female"]),
         check('email')
-            .normalizeEmail()
-            .isEmail(),
+            .isString()
+            .matches(/^\S+@\S+\.\S+$/),
         check('password').isLength({min: 9})
     ]
 }
