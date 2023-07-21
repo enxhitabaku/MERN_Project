@@ -6,12 +6,12 @@ function validatePlaceParamsOnCreate() {
             .not()
             .isEmpty(),
         check('description').isLength({min: 1}),
-        check('location.latitude')
+        check('latitude')
             .isString()
-            .matches(/^[1-9]\d*$/),
-        check('location.longitude')
+            .matches(/^(?:39|4[0-2])(?:\.\d+)?$/),
+        check('longitude')
             .isString()
-            .matches(/^[1-9]\d*$/)
+            .matches(/^(?:19|2[0-1])(?:\.\d+)?$/)
     ]
 }
 

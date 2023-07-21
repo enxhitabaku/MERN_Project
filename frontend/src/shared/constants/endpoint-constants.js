@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+export const BASE_URL = "http://localhost:5000";
 
 export const LOG_IN_ENDPOINT = `${BASE_URL}/api/users/log-in`;
 export const SIGN_UP_ENDPOINT = `${BASE_URL}/api/users/sign-up`;

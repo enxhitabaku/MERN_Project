@@ -4,12 +4,14 @@ const bodyParser = require('body-parser');
 
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
-const {onNoHTTPStatusCodeDetected, onRouteNotFound} = require("./middleware/http-error");
+const {onNoHTTPStatusCodeDetected, onRouteNotFound, onInvalidFileSubmission} = require("./middleware/on-errors");
 const {databaseConnect} = require("./database/database-connection");
+const path = require("path");
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,12 +24,17 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+
 app.use('/api/places', placesRoutes);
 app.use('/api/users', usersRoutes);
 
 app.use(onRouteNotFound);
 
+app.use(onInvalidFileSubmission)
+
 app.use(onNoHTTPStatusCodeDetected);
+
 
 databaseConnect()
     .then(() => {

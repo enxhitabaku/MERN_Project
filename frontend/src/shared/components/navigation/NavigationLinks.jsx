@@ -4,8 +4,7 @@ import Typography from '@mui/material/Typography'
 import MenuItem from '@mui/material/MenuItem'
 
 import {
-    authorizationLinksList,
-    navLinksList
+    authorizationLinksList
 } from '../../constants/navigation-bar-constants'
 import {AuthenticationContext} from "../../context/AuthenticationContext";
 import {useContext} from "react";

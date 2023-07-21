@@ -8,7 +8,7 @@ import {Button, CardActions} from '@mui/material'
 import '../styles/user-places-style.css'
 import {useContext} from "react";
 import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
-import {MODIFY_PLACE_ENDPOINT} from "../../shared/constants/endpoint-constants";
+import {BASE_URL, MODIFY_PLACE_ENDPOINT} from "../../shared/constants/endpoint-constants";
 import {useHttpClient} from "../../shared/hooks/http-client-hook";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -47,8 +47,9 @@ export default function PlaceItem({place, onDelete}) {
                 <CardMedia
                     className="place-list-item-image"
                     component="img"
-                    image={place.imageSrc}
-                    alt={`Image rapresenting ${place.title}`}
+                    image={`${BASE_URL}/${place?.image}`}
+
+                    alt={`Image representing ${place.title}`}
                 />
                 <CardContent className="place-list-item-content">
                     <Typography gutterBottom variant="h5" component="div">

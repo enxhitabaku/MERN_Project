@@ -31,12 +31,12 @@ async function retrievePlaceByUserIdFromDatabase(creatorId) {
     }
 }
 
-async function createNewPlaceOnDatabase(title, description, location, image, creatorId) {
+async function createNewPlaceOnDatabase(image, title, description, location, creatorId) {
     const createdPlace = new Place({
+        image,
         title,
         description,
-        location: location,
-        image: image,
+        location,
         creatorId
     });
 

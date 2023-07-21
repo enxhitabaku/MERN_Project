@@ -1,15 +1,13 @@
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useHttpClient} from "../../shared/hooks/http-client-hook";
 import PlaceList from '../components/PlaceList'
 import {USER_PLACES_ENDPOINT} from "../../shared/constants/endpoint-constants";
-import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import {useParams} from "react-router-dom";
 
 
 export default function UserPlaces() {
-    // const {user} = useContext(AuthenticationContext);
     const {isLoading, error, sendRequest} = useHttpClient();
     const [loadedPlaces, setLoadedPlaces] = useState();
 

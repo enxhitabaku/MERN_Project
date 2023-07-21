@@ -2,6 +2,7 @@
 li.user-list-item {
     list-style-type: none;
     margin-bottom: 20px;
+    width: 450px;
 }
 
 li.user-list-item .MuiCard-root:hover {
