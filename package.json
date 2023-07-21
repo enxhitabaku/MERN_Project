@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "start-concurrently": "concurrently \"cd backend && npm run classic-server-start\" \"cd frontend && npm run start"
+  },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "prettier": "3.0.0"
   }
 }
