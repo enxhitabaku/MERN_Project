@@ -11,23 +11,23 @@ import Tooltip from '@mui/material/Tooltip'
 
 import AppLogo from './AppLogo'
 import {
-    NavigationLinks,
-    ResponsiveNavigationLinks, AuthorizationLinks,
-} from './AppLinks'
+    NavigationLinks, AuthorizationLinks,
+} from './NavigationLinks'
 
 import '../../styles/navigation-bar.css'
 import {AuthenticationContext} from "../../context/AuthenticationContext";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import MaleAvatar from "../../../static/images/avatar/avatar-boy.png";
+import FemaleAvatar from "../../../static/images/avatar/avatar-girl.png";
 
 /**
  * Functional Component to render the Navigation Bar
  * @component
- * @param {{user: User}}
  * @returns {JSX.Element}
  **/
-export default function NavigationBar({user}) {
-    const {isAuthenticated, onLogOut} = useContext(AuthenticationContext);
+export default function NavigationBar() {
+    const {isAuthenticated, user, onLogOut} = useContext(AuthenticationContext);
 
     const [anchorElNav, setAnchorElNav] = useState(null)
     const [anchorElUser, setAnchorElUser] = useState(null)
@@ -92,7 +92,7 @@ export default function NavigationBar({user}) {
                                         display: {xs: 'block', md: 'none'},
                                     }}
                                 >
-                                    <NavigationLinks onClick={handleCloseNavMenu}/>
+                                    <NavigationLinks onClick={handleCloseNavMenu} mobileView={false}/>
                                 </Menu>
                             </Box>
                             <Box
@@ -101,9 +101,7 @@ export default function NavigationBar({user}) {
                                     display: {xs: 'none', md: 'flex'},
                                 }}
                             >
-                                <ResponsiveNavigationLinks
-                                    onClick={handleCloseNavMenu}
-                                />
+                                <NavigationLinks onClick={handleCloseNavMenu} mobileView={true}/>
                             </Box>
                         </>
                     }
@@ -118,8 +116,8 @@ export default function NavigationBar({user}) {
                                             sx={{p: 0}}
                                         >
                                             <Avatar
-                                                alt={user.fullName}
-                                                src={user.imageSrc}
+                                                alt={user.email}
+                                                src={user.gender === "male" ? MaleAvatar : FemaleAvatar}
                                             />
                                         </IconButton>
                                     </Tooltip>

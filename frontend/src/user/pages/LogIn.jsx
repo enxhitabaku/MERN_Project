@@ -12,31 +12,50 @@ import {
     PASSWORD_INPUT_TYPE,
     SIMPLE_INPUT_TYPE
 } from "../../shared/constants/form-fields-constants";
+import {LOG_IN_ENDPOINT} from "../../shared/constants/endpoint-constants"
 import Box from "@mui/material/Box";
 import {Button, CardActions} from "@mui/material";
 import {useContext} from "react";
 import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
+import {useHttpClient} from "../../shared/hooks/http-client-hook";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
+
+const INITIAL_INPUT_DATA = {
+    EMAIL_FIELD_ID: {
+        value: "",
+        isValid: false
+    },
+    PASSWORD_FIELD_ID: {
+        value: "",
+        isValid: false
+    }
+}
 
 export default function LogIn() {
-    const {onLogIn} = useContext(AuthenticationContext);
-    const [formState, inputHandler] = useForm(
-        {
-            EMAIL_FIELD_ID: {
-                value: "",
-                isValid: false
-            },
-            PASSWORD_FIELD_ID: {
-                value: "",
-                isValid: false
-            }
-        }, false
-    )
+    const {doAuthenticate} = useContext(AuthenticationContext);
+    const {isLoading, error, sendRequest} = useHttpClient();
+    const [formState, inputHandler] = useForm(INITIAL_INPUT_DATA, false);
 
-    function logInHandler(event) {
+    async function logInHandler(event) {
         event.preventDefault()
-        console.log(formState.inputs)
         if (formState.isValid) {
-            onLogIn()
+            try {
+                /**@type{User}*/
+                const responseData = await sendRequest(LOG_IN_ENDPOINT, 'POST',
+                    JSON.stringify({
+                        email: formState.inputs.EMAIL_FIELD_ID.value,
+                        password: formState.inputs.PASSWORD_FIELD_ID.value
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
+                );
+
+                doAuthenticate(responseData);
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 
@@ -73,12 +92,16 @@ export default function LogIn() {
                             type="submit"
                             size="small"
                             variant="contained"
-                            disabled={!formState.isValid}
+                            disabled={!formState.isValid && !isLoading}
                             onClick={logInHandler}
                         >
-                            Log in
+                            Log In
                         </Button>
                     </CardActions>
+                    {isLoading &&
+                        <div style={{display: "flex", justifyContent: "center"}}><CircularProgress/></div>}
+                    {error && !isLoading &&
+                        <Alert severity="error">Login failed. Please check your credentials and try again.</Alert>}
                 </Card>
             </form>
         </section>

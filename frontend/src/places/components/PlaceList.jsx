@@ -8,7 +8,7 @@ import PlaceItem from './PlaceItem'
  * @param {{places: Place[]}}
  * @returns {JSX.Element}
  */
-export default function PlaceList({ places }) {
+export default function PlaceList({places, onPlaceDelete}) {
     if (places?.length === 0) {
         return (
             <section id="place-list-section">
@@ -24,7 +24,7 @@ export default function PlaceList({ places }) {
         <section id="place-list-section">
             <ul>
                 {places.map((place) => {
-                    return <PlaceItem key={place.id} place={place} />
+                    return <PlaceItem key={place.id} place={place} onDelete={onPlaceDelete}/>
                 })}
             </ul>
         </section>

@@ -18,8 +18,11 @@ async function retrievePlaceByIdFromDatabase(placeId) {
 async function retrievePlaceByUserIdFromDatabase(creatorId) {
     try {
         const placesList = await Place.find({creatorId: creatorId});
-        if (!placesList || placesList.length === 0) {
+        if (!placesList) {
             return ServiceResponse.error('Could not find places for the provided user id.', 404);
+        }
+        if (placesList.length === 0) {
+            return ServiceResponse.success({places: []}, 200)
         }
         const placesListWithGetters = placesList.map(place => place.toObject({getters: true}));
         return ServiceResponse.success({places: placesListWithGetters}, 200)

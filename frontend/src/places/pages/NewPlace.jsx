@@ -2,6 +2,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import {Button, CardActions} from '@mui/material'
+import {useHistory} from 'react-router-dom';
 
 import FormInput from '../../shared/components/FormElements/FormInput'
 import useForm from '../../shared/hooks/place-form-hook'
@@ -17,8 +18,14 @@ import {
     LONGITUDE_FIELD_ID,
     TITLE_FIELD_ID, FILE_INPUT_TYPE, TEXT_AREA_INPUT_TYPE, SIMPLE_INPUT_TYPE,
 } from '../../shared/constants/form-fields-constants'
+import {ADD_PLACES_ENDPOINT} from "../../shared/constants/endpoint-constants";
+import {useContext} from "react";
+import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
+import {useHttpClient} from "../../shared/hooks/http-client-hook";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
-const initialFormSetUp = {
+const INITIAL_FORM_SET_UP = {
     FILE_UPLOAD_FIELD_ID: {
         value: '',
         isValid: false,
@@ -41,12 +48,35 @@ const initialFormSetUp = {
     }
 }
 export default function AddPlace() {
-    const [formState, inputHandler] = useForm(initialFormSetUp, false);
+    const {user} = useContext(AuthenticationContext);
+    const history = useHistory()
+    const {isLoading, error, sendRequest} = useHttpClient();
+    const [formState, inputHandler] = useForm(INITIAL_FORM_SET_UP, false);
 
-    function placeSubmitHandler(event) {
+    async function placeSubmitHandler(event) {
         event.preventDefault()
-        //TODO: Send data to backend
-        console.log(formState.inputs)
+        if (formState.isValid) {
+            try {
+                await sendRequest(ADD_PLACES_ENDPOINT, 'POST',
+                    JSON.stringify({
+                        image: "", //TODO: handle image upload
+                        title: formState.inputs.TITLE_FIELD_ID.value,
+                        description: formState.inputs.DESCRIPTION_FIELD_ID.value,
+                        location: {
+                            latitude: formState.inputs.LATITUDE_FIELD_ID.value,
+                            longitude: formState.inputs.LONGITUDE_FIELD_ID.value,
+                        },
+                        creatorId: user.id
+                    }),
+                    {
+                        'Content-Type': 'application/json'
+                    }
+                );
+                history.push(`${user.id}/places`);
+            } catch (err) {
+                console.log(err);
+            }
+        }
     }
 
     function handleOnDiscard() {
@@ -122,7 +152,7 @@ export default function AddPlace() {
                                 type="submit"
                                 size="small"
                                 variant="contained"
-                                disabled={!formState.isValid}
+                                disabled={!formState.isValid && !isLoading}
                                 onClick={placeSubmitHandler}
                             >
                                 Save
@@ -133,10 +163,15 @@ export default function AddPlace() {
                                 color="error"
                                 onClick={handleOnDiscard}
                             >
-                                Go Back
+                                Cancel
                             </Button>
                         </div>
                     </CardActions>
+                    {isLoading &&
+                        <div style={{display: "flex", justifyContent: "center"}}><CircularProgress/></div>}
+                    {error && !isLoading &&
+                        <Alert severity="error">New place creation failed. Please try again.</Alert>}
+
                 </Card>
             </form>
         </section>

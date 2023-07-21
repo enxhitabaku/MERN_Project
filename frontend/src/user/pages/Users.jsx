@@ -1,22 +1,30 @@
 import UsersList from '../components/UsersList'
-import AvatarOne from '../../static/images/avatar/avatar-boy-1.png'
-import AvatarTwo from '../../static/images/avatar/avatar-boy-2.png'
-
-const DummyUsersList = [
-    {
-        id: '1',
-        fullName: 'Remy John',
-        imageSrc: AvatarOne,
-        placeCount: 2,
-    },
-    {
-        id: '2',
-        fullName: 'John Sina',
-        imageSrc: AvatarTwo,
-        placeCount: 1,
-    },
-]
+import {useHttpClient} from "../../shared/hooks/http-client-hook";
+import {useEffect, useState} from "react";
+import {ALL_USERS_ENDPOINT} from "../../shared/constants/endpoint-constants";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Users() {
-    return <UsersList users={DummyUsersList} />
+    const {isLoading, sendRequest} = useHttpClient();
+    const [loadedUsers, setLoadedUsers] = useState();
+
+    useEffect(() => {
+        async function fetchUsers() {
+            try {
+                const responseData = await sendRequest(ALL_USERS_ENDPOINT);
+                setLoadedUsers(responseData.users);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        fetchUsers();
+    }, [sendRequest]);
+
+    return (
+        <>
+            {isLoading && <div style={{display: "flex", justifyContent: "center"}}><CircularProgress/></div>}
+            {(!isLoading && loadedUsers) && <UsersList users={loadedUsers}/>}
+        </>
+    )
 }

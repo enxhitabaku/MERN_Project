@@ -5,12 +5,13 @@ function validatePlaceParamsOnCreate() {
         check('title')
             .not()
             .isEmpty(),
-        check('description').isLength({min: 5}),
+        check('description').isLength({min: 1}),
         check('location.latitude')
             .isString()
             .matches(/^[1-9]\d*$/),
         check('location.longitude')
-            .isFloat({min: 1})
+            .isString()
+            .matches(/^[1-9]\d*$/)
     ]
 }
 
