@@ -10,17 +10,18 @@ places on Google Maps with a single button click.
 
 To get started with the project, follow these steps:
 
-1. Clone the repository: git clone https://github.com/enxhitabaku/MERN_Project.git
-2. Set up the database
+1. Clone the repository: git clone https://github.com/enxhitabaku/MERN_Project.git\
+2. Checkout to the **master** branch
+3. Set up the database
     - Get Started with Mongo DB and build a Cluster, check this step-by-step
       guide https://www.javatpoint.com/mongodb-atlas
     - Copy the connection string
     - Open the file _./backend/.env_
     - Replace the value under MONGO_DB_URI with your personal connection string.
-3. Install dependencies for both the backend and frontend:
+4. Install dependencies for both the backend and frontend:
     - On the project root open the terminal and run the command **npm run install**
     - Again on the project root open the terminal and run the command **npm run install-dependencies**
-4. Start the development server for both the backend and frontend:
+5. Start the development server for both the backend and frontend:
     - On the project root open the terminal and run the command **npm run start-concurrently**
 
 ## Usage
