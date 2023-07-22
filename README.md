@@ -24,11 +24,6 @@ To get started with the project, follow these steps:
 5. Start the development server for both the backend and frontend:
     - On the project root open the terminal and run the command **npm run start-concurrently**
 
-## Usage
-
-- Main Page: View a list of all users with their images, email addresses, and the number of places they have added.
-- User Profile: Click on a user to view their place records.
-
 ## Technologies Used
 
 The project is built using the MERN (MongoDB, Express, React, Node.js) stack.
@@ -71,6 +66,7 @@ The frontend directory contains the client-side code for the application built u
     - **NOTE**: Image size is restricted to _256KB_, and longitude and latitude must be within the Albanian borders'
       coordinates range _(longitude: 19 to 21, latitude: 39 to 42)_.
 3. View other users' place records
+    - Main Page: View a list of all users with their images, email addresses, and the number of places they have added.
     - User Profile: Click on a user to view their place records.
     - Open on Google Maps: With a click of a button, you can view the listed place on Google Map
 
