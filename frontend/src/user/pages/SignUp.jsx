@@ -71,6 +71,7 @@ export default function SignUp() {
                             <h1>Sign Up</h1>
                             <FormInput
                                 id={RADIO_BUTTON_FIELD_ID}
+                                name={"gender-radio-buttons-group"}
                                 isRequired={true}
                                 label="Gender"
                                 errorText="Please select an option."
@@ -81,6 +82,7 @@ export default function SignUp() {
                             />
                             <FormInput
                                 id={EMAIL_FIELD_ID}
+                                name={"email"}
                                 label="Email Address"
                                 errorText="Please enter a valid email address."
                                 inputElementType={SIMPLE_INPUT_TYPE}
@@ -90,6 +92,7 @@ export default function SignUp() {
                             />
                             <FormInput
                                 id={PASSWORD_FIELD_ID}
+                                name={"password"}
                                 label="Password"
                                 errorText="Please enter a valid password."
                                 inputElementType={PASSWORD_INPUT_TYPE}

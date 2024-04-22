@@ -14,6 +14,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 
 export default function FormInput({
                                       id,
+                                      name,
                                       inputElementType,
                                       label,
                                       defaultValue,
@@ -62,6 +63,7 @@ export default function FormInput({
                 <TextField
                     required={isRequired ?? false}
                     id={id}
+                    name={name}
                     label={label ?? ""}
                     defaultValue={defaultValue ?? ""}
                     error={hasError}
@@ -76,6 +78,7 @@ export default function FormInput({
                 <TextField
                     required={isRequired ?? false}
                     id={id}
+                    name={name}
                     label={label ?? ""}
                     defaultValue={defaultValue ?? ""}
                     error={hasError}
@@ -91,6 +94,7 @@ export default function FormInput({
                 <TextField
                     required={isRequired ?? false}
                     id={id}
+                    name={name}
                     label={label ?? ""}
                     defaultValue={defaultValue ?? ""}
                     error={hasError}
@@ -108,14 +112,13 @@ export default function FormInput({
                     <FormLabel>{label ?? ""}</FormLabel>
                     <RadioGroup
                         id={id}
+                        name={name}
                         required={isRequired ?? false}
                         defaultValue={defaultValue ?? ""}
                         onChange={changeHandler}
                         onBlur={touchHandler}
                         row
                         aria-labelledby="demo-controlled-radio-buttons-group"
-                        name="gender-radio-buttons-group"
-
                     >
                         <FormControlLabel value={RADIO_VALID_VALUES["F"].value} control={<Radio/>}
                                           label={RADIO_VALID_VALUES["F"].label}/>
@@ -130,6 +133,7 @@ export default function FormInput({
             return (
                 <ImageUploader
                     id={id}
+                    name={name}
                     error={hasError}
                     onChange={changeFileHandler}
                 />

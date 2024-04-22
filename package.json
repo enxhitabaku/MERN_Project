@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start-concurrently": "concurrently \"cd backend && npm run classic-server-start\" \"cd frontend && npm run start",
-    "install-dependencies": "concurrently \"cd backend && npm install\" \"cd frontend && npm install"
+    "start-concurrently": "concurrently \"cd backend && npm run classic-server-start\" \"cd frontend && npm run start\"",
+    "install-dependencies": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\""
   },
   "devDependencies": {
     "concurrently": "^8.2.0",

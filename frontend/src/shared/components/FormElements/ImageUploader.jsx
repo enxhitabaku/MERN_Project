@@ -10,7 +10,7 @@ import {FILE_MAX_SIZE, FILE_WHITE_LIST} from "../../constants/form-fields-consta
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginFileValidateType)
 
 export default function ImageUploader({id, onChange, error}) {
-    const [fileList, setFileList] = useState([])
+    const [fileList, setFileList] = useState([]);
 
     function shouldAllowFile(file) {
         return (
@@ -44,7 +44,7 @@ export default function ImageUploader({id, onChange, error}) {
                 labelIdle='Drag & Drop your image or <span class="filepond--label-action">Browse</span>'
             />
             <FormHelperText>
-                Allowed image format: {FILE_WHITE_LIST.join('; ')} <br/>
+                Allowed image format: {FILE_WHITE_LIST.length  !== 0 ? FILE_WHITE_LIST.join('; ') : FILE_WHITE_LIST[0]} <br/>
                 Max. image size: {FILE_MAX_SIZE}KB
             </FormHelperText>
         </div>

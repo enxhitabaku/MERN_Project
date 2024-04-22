@@ -32,14 +32,15 @@ async function retrievePlaceByUserIdFromDatabase(creatorId) {
     }
 }
 
-async function createNewPlaceOnDatabase(image, title, description, location, creatorId) {
+async function createNewPlaceOnDatabase(title, description, imageBase64, location, creatorId) {
     const createdPlace = new Place({
-        image,
         title,
         description,
+        imageBase64,
         location,
         creatorId
     });
+
     try {
         const user = await User.findById(creatorId);
         if (!user) {
@@ -58,6 +59,7 @@ async function createNewPlaceOnDatabase(image, title, description, location, cre
 
         return ServiceResponse.success({place: createdPlace}, 201);
     } catch (err) {
+        console.log(err);
         return ServiceResponse.error('Creating place failed, please try again.', 500);
     }
 }
@@ -95,8 +97,6 @@ async function deleteExistingPlaceFromDatabase(placeId, userId) {
             return ServiceResponse.error('You are not authorized to delete this place.', 401);
         }
 
-        const placeImage = place.image;
-
         //Started a session to run tasks sequentially. i.e the place deletion and unlink it from the creator based on his id
         const deleteSession = await mongoose.startSession();
         deleteSession.startTransaction();
@@ -106,11 +106,6 @@ async function deleteExistingPlaceFromDatabase(placeId, userId) {
         await place.creatorId.save({session: deleteSession});
 
         await deleteSession.commitTransaction();
-
-        //Remove the image on place delete.
-        fs.unlink(placeImage, (err) => {
-            console.log(err)
-        });
         return ServiceResponse.success({message: "Place Deleted Successfully!"}, 204);
     } catch (err) {
         return ServiceResponse.error('Something went wrong, could not delete place.', 500);

@@ -38,11 +38,11 @@ async function createPlace(req, res, next) {
         )
     }
 
-    const {title, description, latitude, longitude} = req.body;
+    const {imageBase64, title, description, latitude, longitude} = req.body;
     const location = {latitude, longitude}
-    const filePath = req.file.path.replace(/\\/g, "/");
+    const imageBuffer = Buffer.from(imageBase64, "base64");
 
-    const createNewPlaceResponse = await createNewPlaceOnDatabase(filePath, title, description, location, req.userData.id);
+    const createNewPlaceResponse = await createNewPlaceOnDatabase(title, description, imageBuffer, location, req.userData.id);
     if (!createNewPlaceResponse.success) {
         const httpError = new HttpError(createNewPlaceResponse.message, createNewPlaceResponse.httpStatusCode);
         return next(httpError);

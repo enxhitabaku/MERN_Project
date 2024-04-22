@@ -43,14 +43,14 @@ export default function PlaceItem({place, onDelete}) {
         }
     }
 
+    //TODO: Handle all types of images no only jpeg.
     return (
         <li className="place-list-item">
             <Card>
                 <CardMedia
                     className="place-list-item-image"
                     component="img"
-                    image={`${BASE_URL}/${place?.image}`}
-
+                    src={`data:image/jpeg;base64, ${place.imageBase64}`}
                     alt={`Image representing ${place.title}`}
                 />
                 <CardContent className="place-list-item-content">

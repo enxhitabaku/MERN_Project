@@ -68,6 +68,7 @@ export default function LogIn() {
 
                             <FormInput
                                 id={EMAIL_FIELD_ID}
+                                name={"email"}
                                 label="Email Address"
                                 errorText="Please enter a valid email address."
                                 inputElementType={SIMPLE_INPUT_TYPE}
@@ -77,6 +78,7 @@ export default function LogIn() {
                             />
                             <FormInput
                                 id={PASSWORD_FIELD_ID}
+                                name={"password"}
                                 label="Password"
                                 errorText="Please enter a valid password."
                                 inputElementType={PASSWORD_INPUT_TYPE}

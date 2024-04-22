@@ -1,21 +1,19 @@
 const {check} = require("express-validator");
 
-function validatePlaceParamsOnCreate() {
-    return [
-        check('title')
-            .not()
-            .isEmpty(),
-        check('description')
-            .not()
-            .isEmpty(),
-        check('latitude')
-            .isString()
-            .matches(/^(?:39|4[0-2])(?:\.\d+)?$/),
-        check('longitude')
-            .isString()
-            .matches(/^(?:19|2[0-1])(?:\.\d+)?$/)
-    ]
-}
+const validatePlaceParamsOnCreate = [
+    check('title')
+        .not()
+        .isEmpty(),
+    check('description')
+        .not()
+        .isEmpty(),
+    check('latitude')
+        .isString()
+        .matches(/^(?:39|4[0-2])(?:\.\d+)?$/),
+    check('longitude')
+        .isString()
+        .matches(/^(?:19|2[0-1])(?:\.\d+)?$/)
+];
 
 function validatePlaceParamOnUpdate() {
     return [
@@ -50,7 +48,7 @@ function validateUserParamsOnLogIn() {
 }
 
 module.exports = {
-    validatePlaceParamsOnCreate: validatePlaceParamsOnCreate(),
+    validatePlaceParamsOnCreate: validatePlaceParamsOnCreate,
     validatePlaceParamOnUpdate: validatePlaceParamOnUpdate(),
     validateUserParamsOnSignUp: validateUserParamsOnSignUp(),
     validateUserParamsOnLogIn: validateUserParamsOnLogIn()

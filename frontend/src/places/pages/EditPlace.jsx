@@ -125,6 +125,7 @@ export default function EditPlace() {
                             <Box noValidate autoComplete="off" id="form-container">
                                 <FormInput
                                     id={TITLE_FIELD_ID}
+                                    name={"title"}
                                     isRequired={true}
                                     label="Title"
                                     inputElementType={SIMPLE_INPUT_TYPE}
@@ -136,6 +137,7 @@ export default function EditPlace() {
                                 />
                                 <FormInput
                                     id={DESCRIPTION_FIELD_ID}
+                                    name={"description"}
                                     isRequired={true}
                                     label="Description"
                                     inputElementType={TEXT_AREA_INPUT_TYPE}

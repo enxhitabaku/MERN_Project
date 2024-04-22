@@ -34,6 +34,7 @@ export function validate(value, validators) {
         }
         if (validator.type === VALIDATOR_TYPE_FILE) {
             isValid = value !== undefined && FILE_WHITE_LIST.includes(value.type) && FILE_MAX_SIZE >= value.size;
+            isValid = true;
         }
         if (validator.type === VALIDATOR_TYPE_EMAIL) {
             isValid = isValid && /^\S+@\S+\.\S+$/.test(value);

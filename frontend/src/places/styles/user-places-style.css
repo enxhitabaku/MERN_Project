@@ -7,6 +7,8 @@ li.place-list-item {
 .place-list-item-image {
     margin: auto;
     padding: 10px;
+    max-width: 250px;
+    max-height: 250px;
 }
 
 .place-list-item-content,

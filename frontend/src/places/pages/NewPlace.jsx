@@ -9,7 +9,7 @@ import useForm from '../../shared/hooks/place-form-hook'
 import {
     VALIDATOR_REQUIRE,
     VALIDATOR_FILE, VALIDATOR_LATITUDE, VALIDATOR_LONGITUDE,
-} from '../../shared/utils/validators'
+} from '../../shared/utils/validators';
 import {
     FILE_UPLOAD_FIELD_ID,
     DESCRIPTION_FIELD_ID,
@@ -52,19 +52,36 @@ export default function AddPlace() {
     const {isLoading, error, sendRequest} = useHttpClient();
     const [formState, inputHandler] = useForm(INITIAL_FORM_SET_UP, false);
 
+    async function fileToBase64(file) {
+        return await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(reader.result.split(',')[1]); // Extracting base64 data from the result
+            };
+
+            reader.onerror = error => {
+                reject(error);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
     async function placeSubmitHandler(event) {
         event.preventDefault()
         if (formState.isValid) {
             try {
-                const formData = new FormData();
-                formData.append('image', formState.inputs.FILE_UPLOAD_FIELD_ID.value);
-                formData.append('title', formState.inputs.TITLE_FIELD_ID.value);
-                formData.append('description', formState.inputs.DESCRIPTION_FIELD_ID.value);
-                formData.append('latitude', formState.inputs.LATITUDE_FIELD_ID.value);
-                formData.append('longitude', formState.inputs.LONGITUDE_FIELD_ID.value);
-                await sendRequest(ADD_PLACES_ENDPOINT, 'POST', formData,
+                await sendRequest(ADD_PLACES_ENDPOINT, 'POST', JSON.stringify({
+                        imageBase64: await fileToBase64(formState.inputs.FILE_UPLOAD_FIELD_ID.value),
+                        title: formState.inputs.TITLE_FIELD_ID.value,
+                        description: formState.inputs.DESCRIPTION_FIELD_ID.value,
+                        latitude: formState.inputs.LATITUDE_FIELD_ID.value,
+                        longitude: formState.inputs.LONGITUDE_FIELD_ID.value
+                    }),
                     {
-                        Authorization: "Bearer " + token
+                        "Authorization": "Bearer " + token,
+                        "Content-Type":"application/json"
                     });
                 history.push(`${userId}/places`);
             } catch (err) {
@@ -87,6 +104,7 @@ export default function AddPlace() {
                         <Box noValidate autoComplete="off" id="form-container">
                             <FormInput
                                 id={FILE_UPLOAD_FIELD_ID}
+                                name={"image"}
                                 label={"Place Image"}
                                 inputElementType={FILE_INPUT_TYPE}
                                 isValid={formState?.inputs?.FILE_UPLOAD_FIELD_ID?.isValid}
@@ -96,6 +114,7 @@ export default function AddPlace() {
                             />
                             <FormInput
                                 id={TITLE_FIELD_ID}
+                                name={"title"}
                                 isRequired={true}
                                 label={"Title"}
                                 inputElementType={SIMPLE_INPUT_TYPE}
@@ -106,6 +125,7 @@ export default function AddPlace() {
                             />
                             <FormInput
                                 id={DESCRIPTION_FIELD_ID}
+                                name={"description"}
                                 isRequired={true}
                                 label={"Description"}
                                 inputElementType={TEXT_AREA_INPUT_TYPE}
@@ -117,6 +137,7 @@ export default function AddPlace() {
                             <div id="coordinates-fields-container">
                                 <FormInput
                                     id={LATITUDE_FIELD_ID}
+                                    name={"latitude"}
                                     isRequired={true}
                                     label={"Latitude"}
                                     inputElementType={SIMPLE_INPUT_TYPE}
@@ -127,6 +148,7 @@ export default function AddPlace() {
                                 />
                                 <FormInput
                                     id={LONGITUDE_FIELD_ID}
+                                    name={"longitude"}
                                     isRequired={true}
                                     label={"Longitude"}
                                     inputElementType={SIMPLE_INPUT_TYPE}
