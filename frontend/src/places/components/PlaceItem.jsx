@@ -8,7 +8,7 @@ import {Button, CardActions} from '@mui/material'
 import '../styles/user-places-style.css'
 import {useContext} from "react";
 import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
-import {BASE_URL, MODIFY_PLACE_ENDPOINT} from "../../shared/constants/endpoint-constants";
+import {MODIFY_PLACE_ENDPOINT} from "../../shared/constants/endpoint-constants";
 import {useHttpClient} from "../../shared/hooks/http-client-hook";
 import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";

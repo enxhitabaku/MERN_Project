@@ -25,22 +25,23 @@ export function validate(value, validators) {
         if (validator.type === VALIDATOR_TYPE_LATITUDE) {
             //Allowed float range: 39 to 42
             const rgx = new RegExp(/^((?:39|4[0-2])(?:\.\d+)?)$/)
-            isValid = isValid && rgx.test(value);
+            isValid = isValid && rgx.test(value.trim());
         }
         if (validator.type === VALIDATOR_TYPE_LONGITUDE) {
             //Allowed float range: 19 to 21
             const rgx = new RegExp(/^(?:19|2[0-1])(?:\.\d+)?$/)
-            isValid = isValid && rgx.test(value);
+            isValid = isValid && rgx.test(value.trim());
         }
         if (validator.type === VALIDATOR_TYPE_FILE) {
             isValid = value !== undefined && FILE_WHITE_LIST.includes(value.type) && FILE_MAX_SIZE >= value.size;
-            isValid = true;
         }
         if (validator.type === VALIDATOR_TYPE_EMAIL) {
-            isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
+            const rgx = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+            isValid = isValid && rgx.test(value.trim());
         }
         if (validator.type === VALIDATOR_TYPE_PASSWORD) {
-            isValid = isValid && value.length > 8;
+            const rgx = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/);
+            isValid = isValid && rgx.test(value);
         }
         if (validator.type === VALIDATOR_TYPE_RADIO_GROUP) {
             const radioGroupOptionsValue = Object.values(RADIO_VALID_VALUES).map((option) => option.value)

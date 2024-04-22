@@ -19,6 +19,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import {AuthenticationContext} from "../../shared/context/AuthenticationContext";
 import {useContext} from "react";
+import FormHelperText from "@mui/material/FormHelperText";
 
 const INITIAL_INPUT_DATA = {
     RADIO_BUTTON_FIELD_ID: {
@@ -100,6 +101,9 @@ export default function SignUp() {
                                 isValid={formState.inputs.PASSWORD_FIELD_ID.isValid}
                                 onInput={inputHandler}
                             />
+                            <FormHelperText>
+                                Password should have at min 8 characters, contain an uppercase and lowercase letter, a digit and a special character.
+                            </FormHelperText>
                         </Box>
                     </CardContent>
                     <CardActions className="auth-form-action-buttons-container">
